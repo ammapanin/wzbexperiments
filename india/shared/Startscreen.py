@@ -12,7 +12,7 @@ import os
 class Startscreen(tk.Frame):
 
     def __init__(self, master, start_function):
-        self.BASE = os.path.dirname(os.path.abspath(__file__))
+        self.identifiersBASE = os.path.dirname(os.path.abspath(__file__))
         self.master = master
         self.start_experiment_now = start_function
         self.start_frames = self.show_startscreen(master)
@@ -49,7 +49,7 @@ class Startscreen(tk.Frame):
 
 
     def get_dropdown_data(self):
-        datafilepath = os.path.join(self.BASE,
+        datafilepath = os.path.join(self.identifiersBASE,
                                     "identifiers")
 
 
@@ -190,9 +190,9 @@ class Startscreen(tk.Frame):
                 self.households.update({name: hh_dic})
 
 
-        self.name_to_id_dics = {"enumerator": enumerator_dic,
-                                "village": village_dic,
-                                "taluk": taluk_dic}
+        self.idx_name_to_id_dics = {"enumerator": enumerator_dic,
+                                    "village": village_dic,
+                                    "taluk": taluk_dic}
 
         return enumerators_tuple, taluks_tuple
 
@@ -224,21 +224,33 @@ class Startscreen(tk.Frame):
         hh_info_row = len(data_lists) + 1
 
         def show_household_details(name, index, mode):
+            """Record and display household identifier information
+
+            -Take name from list of household names
+            -Use name to recover household details from
+             self.households dictionary (hh_name: {other identifiers})
+            -Store data in dictionary for display
+            -Store data in entry_dic for data recording
+            """
+
             hh_name = householdheads[1].get()
             hid = self.households[hh_name].get("hid")
+            field_idx = ("ration_nr", "election_id")
+            id_vars = [tk.StringVar(master) for i in ("hid",) + field_idx]
 
-            hid_var = tk.StringVar(master)
-            hid_var.set(hid)
-            self.entry_dic.update({"wzb.hh.id":hid_var})
+            hh_id_strings = [self.select_hh_subset(idx, "hid", hid)[0]
+                             for idx in field_idx]
+            [var.set(i) for var, i in zip(id_vars, [hid] + hh_id_strings)]
 
-            details = dict([(idx, self.select_hh_subset(idx,
-                                                        "hid",
-                                                        hid)[0])
-                       for idx in ("ration_nr", "election_id")])
+            string_details = dict(zip(field_idx, hh_id_strings))
+            var_names = ("wzb.hh.id",) + field_idx
+            var_details = dict(zip(var_names, id_vars))
 
             hh_info = {"hh_name": hh_name,
                        "hid": hid}
-            hh_info.update(details)
+            hh_info.update(string_details)
+
+            self.entry_dic.update(var_details)
 
             daterow = self.show_corrections(master, hh_info, hh_info_row)
             self.make_time_entries(master, daterow)
@@ -628,38 +640,70 @@ class Startscreen(tk.Frame):
         return len(messages) == 0
 
 
-    def start_experiment(self, experiment):
-        print self.entry_dic.keys()
-        print self.entry_dic.get("interviewed_check").get()
-        id_dics = self.name_to_id_dics
+    def clean_entry_dic(self):
+        """Return identifiers in string:string dictionary"""
+
+        d = self.entry_dic
+
+        string_vars = ("wzb.ind.id", )
+
+        # Convert basic identifier names to integer values
+        idx_to_name = self.idx_name_to_id_dics
         numeric_tags = ("tid", "vid", "enumid")
         id_levels = ("taluk", "village", "enumerator")
 
         values = [(level, self.entry_dic.get(level).get())
                   for level in id_levels]
 
-        ids = [id_dics.get(level).get(value)
-               for level, value in values]
+        numeric_ids = [idx_to_name.get(level).get(value)
+                       for level, value in values]
 
+        # Ensure names are recorded as both names and wzb.ids
         interviewed_name = self.entry_dic.get("interviewed_check").get()
         interviewed_id = self.member_name_to_id.get(interviewed_name)
 
-        numeric_ids = [tk.IntVar() for v in numeric_tags]
-        [v.set(idx) for v, idx in zip(numeric_ids, ids)]
+        interviewed_details = [("interviewed_name", interviewed_name),
+                               ("wzb.ind.id",interviewed_id)]
+
+        # Return strings from other tk vars
+        recorded_varnames = ("ration_nr",
+                             "election_id",
+                             "ration_corrected",
+                             "election_corrected",
+                             "hh_name",
+                             "wzb.hh.id",
+                             "date",
+                             "time",
+                             "hh_name_corrected")
 
 
-        numeric_dic = dict(zip(numeric_tags, numeric_ids))
+        # Update all variables to be recorded as tuples
+        # (varname, value_string)
+        recorded_values = [(v, d.get(v)) for v in string_vars]
+        recorded_values.extend(zip(numeric_tags, numeric_ids))
+        recorded_values.extend(interviewed_details)
+        recorded_values.extend([(varname, d.get(varname).get())
+                                for varname in recorded_varnames])
 
-        interviewed_dic = {"interviewed_name": interviewed_name,
-                           "wzb.ind.id": interviewed_id}
+        return dict(recorded_values)
 
-        self.entry_dic.update(numeric_dic)
-        self.entry_dic.update(interviewed_dic)
 
+    def start_experiment(self, experiment):
+        """Move from log-in to actual experiment
+
+        -Forget all startscreen frame
+        -Unpack valuable information in entry_dic
+        -Call experiment start function
+        """
+
+        idx_dic = self.clean_entry_dic()
         [f.pack_forget() for f in self.start_frames]
 
+        for key, value in idx_dic.items():
+            print key, " ", value
+
         if callable(self.start_experiment_now):
-            self.start_experiment_now()
+            self.start_experiment_now(idx_dic)
         else:
             self.dummy_start()
 
