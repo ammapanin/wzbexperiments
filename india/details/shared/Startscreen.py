@@ -53,7 +53,10 @@ class Startscreen(tk.Frame):
                                     "identifiers")
 
 
-        filenames = ("enumerators.csv", "villages.csv", "heads.csv", "members.csv")
+        filenames = ("enumerators.csv",
+                     "villages.csv",
+                     "heads.csv",
+                     "members.csv")
 
         enumeratorspath, \
             villagespath, \
@@ -100,8 +103,10 @@ class Startscreen(tk.Frame):
         taluk_dic, tid_dic = name_to_id_dic("taluk", "tid")
         village_dic, vid_dic = name_to_id_dic("village", "vid")
 
+        pad_sort = lambda x: int(x.split("-")[0])
 
-        enumerators_tuple = tuple(enumerator_dic.keys())
+        enumerators_tuple = tuple(sorted(enumerator_dic.keys(),
+                                         key = pad_sort))
         taluks_tuple = tuple(taluk_dic.keys())
 
         self.member_name_to_id = dict()
@@ -304,7 +309,6 @@ class Startscreen(tk.Frame):
         bt.config(text = "Validate information",
                   command = entry_validation)
 
-
         entryrows = (row_i, row_i + 1)
         btrow = entryrows[0]
 
@@ -346,14 +350,20 @@ class Startscreen(tk.Frame):
 
 
     def select_hh_subset(self, selected, level, selector):
+        """Return sorted selected sublist
 
-        # print "selector", selector
-        # print "level", level
-        # print "selected", selected
-        sublist = tuple(set([value.get(selected)
-                             for value in self.households.values()
-                             if value.get(level) == selector]))
+        self.households is a dictionary with dictionary values
+        each value dictionary is of a single household
 
+        selected = desired hh attribute: name, rationcard, etc
+        level = village, taluk, etc.
+        selector = particular value of a taluk, village, etc.
+        """
+
+        sublist = list(set([value.get(selected)
+                            for value in self.households.values()
+                            if value.get(level) == selector]))
+        sublist.sort()
         return sublist
 
     def update_dropdowns(self, dropdown, var, newlist):
@@ -452,7 +462,7 @@ class Startscreen(tk.Frame):
 
     def show_person_interviewed(self, master, hid, row_i):
 
-        print hid, "hid"
+        #print hid, "hid"
         interview_var = tk.StringVar()
         relations = self.members.get(hid)
         relations = tuple(relations.get("names")) + ("Other", )
@@ -662,6 +672,9 @@ class Startscreen(tk.Frame):
         interviewed_name = self.entry_dic.get("interviewed_check").get()
         interviewed_id = self.member_name_to_id.get(interviewed_name)
 
+        #print interviewed_name
+        #print self.member_name_to_id
+
         interviewed_details = [("interviewed_name", interviewed_name),
                                ("wzb.ind.id",interviewed_id)]
 
@@ -699,8 +712,8 @@ class Startscreen(tk.Frame):
         idx_dic = self.clean_entry_dic()
         [f.pack_forget() for f in self.start_frames]
 
-        for key, value in idx_dic.items():
-            print key, " ", value
+        #for key, value in idx_dic.items():
+        #    print key, " ", value
 
         if callable(self.start_experiment_now):
             self.start_experiment_now(idx_dic)
