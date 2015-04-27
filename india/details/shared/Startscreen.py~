@@ -148,9 +148,6 @@ class Startscreen(tk.Frame):
                 ind_id = member.get("wzb.ind.id")
                 member_name = [member.get(detail)
                                for detail in name_details]
-                #print "village"
-                #print member.get("village")
-                #print member_name
                 try:
                     m = int(member_name[2])
                     gender = member_name[3]
@@ -158,6 +155,7 @@ class Startscreen(tk.Frame):
                                                            member_relations[m].get("1"))
                 except ValueError:
                     relationship = " "
+
 
                 name = (member_name[0] + " " + \
                         member_name[1] + \
@@ -466,7 +464,7 @@ class Startscreen(tk.Frame):
 
     def show_person_interviewed(self, master, hid, row_i):
 
-        print hid, "hid"
+        #print hid, "hid"
         interview_var = tk.StringVar()
         relations = self.members.get(hid)
         relations = tuple(relations.get("names")) + ("Other", )

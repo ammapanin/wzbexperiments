@@ -1,5 +1,5 @@
 # Main budget program
-# Last updated: 14/04/15; 19/03/15
+# Last updated: 14/04/15; 19/03/15; 26/04/15
 
 
 import Tkinter as tk
@@ -30,10 +30,12 @@ from budget_payment import BudgetPayment
 
 
 ### Program version ####
-version = "1.2"
+version = "1.35"
 
-# version 1.0; Oriinal version sent out beginning of April 2015
-# version 1.2; added 2 makali hh, ensured version saved
+# version 1.0: Oriinal version sent out beginning of April 2015
+# version 1.2: added 2 makali hh, ensured version saved
+
+# version 1.35: fixed Udukunte; removed Keeranigere
 
 
 #budgetpath = "/Users/aserwaahWZB/Documents/Spaces/Low Carbon Experiments/program_files/budget
