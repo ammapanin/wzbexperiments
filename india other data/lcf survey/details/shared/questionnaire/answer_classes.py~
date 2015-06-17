@@ -1,0 +1,35 @@
+import Tkinter as tk
+
+
+class Answer(tk.Frame):
+    def __init__(self, master, **kwargs):
+        tk.Frame.__init__(self, master)
+        self.pack(side = "top")
+
+        self.answer_var = kwargs.get("answer_var")
+        self.options = kwargs.get("options")
+
+class Choice(Answer):
+    def __init__(self, master, **kwargs):
+        Answer.__init__(self, master, **kwargs)
+
+        self.bts = [tk.Radiobutton(self,
+                                   text = txt,
+                                   var = self.answer_var,
+                                   value = txt)
+                    for txt in self.options]
+        [bt.pack(side = "top", anchor = "w") for bt in self.bts]
+
+
+class Entry(Answer):
+    def __init__(self, master, **kwargs):
+        Answer.__init__(self, master, **kwargs)
+        self.entry = tk.Entry(self,
+                              textvariable = self.answer_var)
+        self.entry.pack(side = "top", anchor = "w")
+
+
+
+
+classes = {"choice": Choice,
+           "entry": Entry}

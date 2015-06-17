@@ -1,0 +1,12 @@
+question_text,type,label,tab,options,nconditions,cond_1,cond_1_type,cond_1_values,cond_1_labels,cond_1_texts,cond_2,cond_2_type,cond_2_values,cond_2_labels,cond_2_texts
+How many acres of ragi do you plant?,entry,acres_ragi,tab_0,,0,,,,,,,,,,
+How many of those acres are dry?,slider,dry,tab_0,"20,x30,x2",1,geq,text,24,oprah,"Dr Phil,xDr Oz",,,,,
+How many of those acres are wet?,choice,wet,tab_1,"jing,xbing,xbob",1,equal,applicable,bob,gradient,,,,,,
+What is the gradient?,dropdown,gradient,tab_1,"fart,xkiss,xpopannes",0,,,,,,,,,,
+What is the contour bund quality?,check,contour_bund,tab_1,"any,xall,xabove",2,equal,applicable,"any,xall","jackjohnson,zoprah,xjohnmeyer,zgail",,equal,text,above,"johnmeyer,zgail","Herr Popannes Ponen,zgeneric"
+How many farmers are in your house?,dropdown,farmers,tab_1,"2,x50,2",0,,,,,,,,,,
+What is the gradient of the hypotenuse?,choice,hypotenuse,tab_1,"fart,xkiss,xpopannes",0,,,,,,,,,,
+What is the sound quality of {}?,check,jackjohnson,tab_2,"any,xall,xabove",0,,,,,,,,,,
+What is the poop quality of {}?,check,oprah,tab_2,"any,xall,xabove",0,,,,,,,,,,
+What is the true sound quality of {}?,check,johnmeyer,tab_2,"any,xall,xabove",0,,,,,,,,,,
+What is the echt poop quality of {}?,check,gail,tab_2,"any,xall,xabove",0,,,,,,,,,,
