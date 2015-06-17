@@ -11,10 +11,28 @@ class Answer(tk.Frame):
 
         self.answer_var = tk.StringVar(self)
         self.answer_var.set("x99")
+
+        self.qtype = kwargs.get("type")
         self.options = kwargs.get("options")
         self.label = kwargs.get("label")
+        if kwargs.get("num_list") == True:
+            self.add_number_lists()
 
         self.clickable_widgets = [self]
+    
+    def add_number_lists(self):
+        if self.qtype == "check" or self.qtype == "choice":
+            noptions = len(self.options)
+        else:
+            noptions = 1
+
+        qvars = [tk.IntVar(self) for i in range(noptions)]
+        listvars = [(self, var) + tuple([1, 2, 3, 4])
+                    for var in qvars]
+        nlists = [apply(tk.OptionMenu, loptions) 
+                  for loptions in listvars]
+        [l.grid(row = i, column = 1) for i, l in enumerate(nlists)]
+        return qvars
 
     def get_answer(self):
         answer =  self.answer_var.get()
@@ -30,6 +48,7 @@ class Answer(tk.Frame):
     def make_active(self):
         [w.config(state = "normal") for w in self.activity_widgets]
 
+        
 class TextBox(Answer):
     def __init__(self, master, **kwargs):
         Answer.__init__(self, master, **kwargs)
@@ -38,15 +57,17 @@ class TextBox(Answer):
                                      height = 10,
                                      width = 25,
                                      wrap = "word")
-        answer.pack(side = "top", anchor = "w") 
+        answer.grid(sticky = "w", row = 0, column = 0)
 
 class DynamicText(TextBox):
     def __init__(self, master, **kwargs):
         TextBox.__init__(self, master, **kwargs)
         self.options = kwargs
 
-        update = tk.Button(self, text = "update table", command = self.update_table)
-        update.pack(side = "top")
+        update = tk.Button(self, 
+                           text = "update table", 
+                           command = self.update_table)
+        update.grid(sticky = "w", row = 0, column = 0)
         
     def update_table(self, event = ""):
         table = self.options.get("table")
@@ -67,20 +88,27 @@ class DynamicText(TextBox):
 class Slider(Answer, object):
     def __init__(self, master, **kwargs):
         Answer.__init__(self, master, **kwargs)
+        self.make_slider()
+
+    def make_slider(self):
         start_n, end_n, step_n = self.options
+        ends = step_n.split(",z")
+        if len(ends) > 1:
+            step_n = ends[0]
+            start_lab = ends[1]
+            end_lab = ends[2]
+        else:
+            start_lab = start_n
+            end_lab = end_n
 
-        frame = tk.Frame(self)
-        frame.pack(side = "top", anchor = "w")
-
-        scale_font = tkFont.Font(size = 18, weight = "bold")
-        labs = [tk.Label(frame,
-                         text = txt,
-                         font = scale_font)
-                for txt in (start_n, end_n)]
-        self.labs = labs
-        lab_cols = zip(labs, (0, 2))
-
-        scale = tk.Scale(frame,
+        slider_frame = tk.Frame(self)
+        slider_frame.grid(sticky = "w", row = 0, column = 0)
+        scale_font = tkFont.Font(size = 15, weight = "bold")
+        self.labs = labs = [tk.Label(slider_frame,
+                                     text = txt,
+                                     font = scale_font)
+                            for txt in (start_lab, end_lab)]
+        scale = tk.Scale(slider_frame,
                          length = 200,
                          from_ = start_n,
                          to = end_n,
@@ -88,12 +116,14 @@ class Slider(Answer, object):
                          orient = "horizontal",
                          variable = self.answer_var)
 
+        lab_cols = zip(labs, (0, 2))
         scale.grid(row = 0, column = 1)
         [l.grid(row = 0, column = i, sticky = "sw", padx = 3)
          for l, i in lab_cols]
 
         self.activity_widgets = [scale]
-        self.clickable_widgets.extend([self, frame, scale] + self.labs)
+        self.clickable_widgets.extend([self, slider_frame, scale] + labs)
+        return None
 
     def make_inactive(self):
         super(Slider, self).make_inactive()
@@ -116,9 +146,7 @@ class Dropdown(Answer):
         drop_options = ((self, self.answer_var) + drop_texts)
 
         dropdown = apply(tk.OptionMenu, drop_options)
-        dropdown.pack(side = "top", anchor = "w")
-        self.activity_widgets = [dropdown]
-        self.clickable_widgets.extend([self, dropdown])
+        dropdown.grid(sticky = "w", row = 0, column = 0)
 
     def been_answered(self):
         answer = self.answer_var.get()
@@ -127,16 +155,18 @@ class Dropdown(Answer):
 class Check(Answer):
     def __init__(self, master, **kwargs):
         Answer.__init__(self, master, **kwargs)
+        self.make_buttons()
 
+    def make_buttons(self):
         self.check_vars = [tk.StringVar(self) for txt in self.options]
         [v.set(0) for v in self.check_vars]
         check_options = zip(self.options, self.check_vars)
 
         bts = [tk.Checkbutton(self,
-                                   text = txt,
-                                   var = var)
-                    for txt, var in check_options]
-        [bt.pack(side = "top", anchor = "w") for bt in bts]
+                              text = txt,
+                              var = var)
+               for txt, var in check_options]
+        [bt.grid(sticky = "w", row = i, column = 0) for i, bt in enumerate(bts)]
         self.activity_widgets = bts
         self.clickable_widgets.extend([self, bts])
 
@@ -159,10 +189,9 @@ class Choice(Answer):
                               var = self.answer_var,
                               value = txt)
                for txt in self.options]
-        [bt.pack(side = "top", anchor = "w") for bt in bts]
+        [bt.grid(sticky = "w", row = i, column = 0) for i, bt in enumerate(bts)]
         self.activity_widgets = bts
         self.clickable_widgets.extend([self, bts])
-
 
 class Entry(Answer):
     def __init__(self, master, **kwargs):
@@ -170,7 +199,7 @@ class Entry(Answer):
         entry = tk.Entry(self,
                          textvariable = self.answer_var,
                          show = " ")
-        entry.pack(side = "top", anchor = "w", pady = 2)
+        entry.grid(sticky = "w", row = 0, column = 0)
 
         self.ever_answered = 0
 
@@ -328,29 +357,23 @@ classes = {"choice": Choice,
            "dynamic_text": DynamicText}
 
 
-# def test_run():
-#     root = tk.Tk()
-#     avar = tk.StringVar(root)
-#     avar.set("x99")
+def answer_class_test():
+    root = tk.Tk()
+    avar = tk.StringVar(root)
+    avar.set("x99")
 
-#     test_q = {"options": ["Let's ", "go to the dogs tonight"],
-#               "answer_var": avar,
-#               "label": "dogs"}
+    test_q = {"options": [9, 25, "1,zLet's,zgo to the dogs tonight"],
+              "label": "dogs",
+              "num_list": True,
+              "qview": "single"}
 
-#     test_qlist = {"options": ["Let's ", "go to the dogs tonight"],
-#                   "answer_var": tk.StringVar(root),
-#                   "label": "dogs"}
+    fred = Slider(root, **test_q)
+    # choice = Choice(root, **test_q)
+    # entry = Entry(root, **test_q)
+    # check = Check(root, **test_q)
+    # dropdown = Dropdown(root, **test_qlist)
+    # slider = Slider(root, **test_qscale)
 
-#     test_qscale = {"options": [58, 76, 2],
-#                   "answer_var": tk.StringVar(root),
-#                   "label": "dogs"}
+    return fred
 
-#     choice = Choice(root, **test_q)
-#     entry = Entry(root, **test_q)
-#     check = Check(root, **test_q)
-#     dropdown = Dropdown(root, **test_qlist)
-#     slider = Slider(root, **test_qscale)
-
-#     return root, choice, entry, check, dropdown, slider
-
-#gunners = test_run()
+gunners = answer_class_test()
