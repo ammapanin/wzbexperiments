@@ -1,0 +1,58 @@
+qlabel,tab,
+"general,xhouse,xfood,xcognition task 1,xdurables,xexpenditure,xtransfers in,xtransfers out,xcognition task 2,xinsurance,xsavings and loans,xcredit",,
+house_own,house,
+house_obtain,house,
+house_pay,house,
+house_tax,house,
+house_title,house,
+house_sell,house,
+house_rent,house,
+consumption_food,food,
+table_consumption,food,Please enter the following details
+durables,durables,
+table_durables,durables,Please enter the following details.
+expenditure,expenditure,
+table_expenditure,expenditure,Please enter the following details
+donors,transfers in,
+table_assistance,transfers in,Please enter the following details
+institution_payment,transfers in,
+table_institution,transfers in,
+education_transfers,transfers in,
+education_value,transfers in,
+employment_transfers,transfers in,
+employment_value,transfers in,
+members_transfers,transfers out,
+table_assistance_out,transfers out,Please enter the following details
+cash,savings and loans,
+bonds,savings and loans,
+table_bonds,savings and loans,Please enter the following details for each bond.
+savings_accounts,savings and loans,
+table_savings,savings and loans,Please enter the following details for each account.
+borrow_list,savings and loans,
+table_borrowing,savings and loans,"For each of the loans discussed above, please enter the following details."
+lend_list,lending,
+table_lend,lending,Please enter the following details
+general_health,general,
+eat,general,
+eat_household,general,
+income_shock,general,
+income_shock_describe,general,
+income_shock_cost,general,
+health_shock,general,
+health_shock_describe,general,
+agricultural_shock,general,
+agricultural_shock_describe,general,
+agricultural_shock_cost,general,
+risk_general,general,
+risk_health,general,
+risk_agricultural,general,
+rains_time,general,
+rains_plentiful,general,
+heaven,general,
+hell,general,
+believe_god,general,
+smoke,general,
+drink,general,
+insurance,insurance,
+table_insurance,insurance,Please enter the following details
+table_payout,insurance,Please enter the following details for all insurance payouts received.
