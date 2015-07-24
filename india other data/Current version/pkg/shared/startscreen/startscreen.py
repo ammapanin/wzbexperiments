@@ -32,7 +32,6 @@ class Startscreen(tk.Frame):
         head_lab.pack(side = "top", fill = "both")
         self.pack()
 
-       
         self.validation_frame = tk.Frame(content_frame)
         self.validation_frame.pack(side = "left",
                                    fill = "x",
@@ -65,7 +64,6 @@ class Startscreen(tk.Frame):
 
 
     def do_validations(self):
-
         old_frame = self.validation_frame.children.get("warning")
         if old_frame != None:
             old_frame.destroy()
@@ -85,7 +83,10 @@ class Startscreen(tk.Frame):
             warnings.extend(s.validate())
 
         if self.test_mode == "DEBUG":
-            warnings = list()
+            #warnings = list()
+            new_command = lambda d = {"dummy": "d"}: self.begin_experiment(d)
+            self.bt.config(text = "Start experiment exceptionally",
+                           command = new_command)
 
         if len(warnings) == 0:
             idx_dic = self.get_data()
@@ -163,12 +164,10 @@ class Startscreen(tk.Frame):
         values = idx + (enumid, tid, vid) +\
                  (wzb_hh_id, hh_name, ration, election, p) + \
                  head_corrections + (interview_name, wzb_ind_id) +\
-                 interview_corrections + (date_string, time_string, members_list) 
-
+                 interview_corrections + (date_string, 
+                                          time_string, members_list) 
         idx_dic = dict(zip(variables, values))
-
         return idx_dic
-
 
     def get_reason(self, idx_dic):
         name = self.dropdown.dropdown_vars[3].get()
@@ -201,7 +200,6 @@ class Startscreen(tk.Frame):
             pass
         return None
 
-
     def exit_experiment(self, exit_comment, idx_dic):
         tid = idx_dic.get("tid")
         vid = idx_dic.get("vid")
@@ -218,7 +216,6 @@ class Startscreen(tk.Frame):
         with open(participate_path, "a") as idxfile:
             idxwrite = csv.writer(idxfile)
             idxwrite.writerow(non_participate)
-
         self.root.destroy()
 
     def write_idx(self, idx_dic):
@@ -244,7 +241,6 @@ class Startscreen(tk.Frame):
                     "interview_other_election",
                     "interview_other_relation")
 
-
         individual = [idx_dic.get(tag) for tag in idx_cols]
 
         tid = idx_dic.get("tid")
@@ -261,7 +257,6 @@ class Startscreen(tk.Frame):
             idxwrite.writerow(individual)
 
         print "Individual identifying data appended to ", idxname
-
         return None
 
 

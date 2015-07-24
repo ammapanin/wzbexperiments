@@ -9,11 +9,16 @@ class CognitionTab(tk.Frame):
         tk.Frame.__init__(self, master)
         self.pack(side = "top", fill = "both", expand = True)
 
-        self.base = os.path.dirname(os.path.abspath(__file__))
+        if __name__ == "__main__":
+            self.base = ("/Users/aserwaahWZB/Projects/"
+                         "GUI Code/india other data/Current version/"
+                         "pkg/survey_round_2/details")
+        else:
+            self.base = os.path.dirname(os.path.abspath(__file__))
 
         self.practice_frame, self.main_frame = [tk.Frame(self) for i in (0, 1)]
 
-        info_font = tkFont.Font(size = 14)
+        info_font = tkFont.Font(size = 16)
         self.info = tk.Label(self,
                         text = ("You will now face a series of tasks. "
                                 "These tasks will be timed, "
@@ -25,8 +30,8 @@ class CognitionTab(tk.Frame):
                              font = info_font,
                              wrap = 550)
 
-        instructions_font = tkFont.Font(weight = "bold")
-        self.instructions = tk.Label(self, 
+        instructions_font = tkFont.Font(weight = "bold", size = 15)
+        self.instructions = tk.Label(self,
                                      font = instructions_font,
                                      text = task.extra_info,
                                      justify = "left",
@@ -57,6 +62,9 @@ class CognitionTab(tk.Frame):
         self.real.pack()
         self.begin_bt.pack_forget()
 
+    def get_answers(self):
+        return self.real.get_answers()
+
 class Task:
     def __init__(self, master, base_path):
         self.answer_dic = dict([(i, {"correct": correct,
@@ -64,19 +72,14 @@ class Task:
                                      "time": None})
                                 for i, correct in self.qid_answers])
         self.questions = enumerate([q for q, a in self.qid_answers])
-
         self.qidx = tk.IntVar()
         self.qidx.set(0)
         self.start = tk.DoubleVar()
         self.click_id = self.bind_class(self.name + "cognition_click",
-                                        "<Button-1>", 
+                                        "<Button-1>",
                                         self.make_binding, "+")
- 
+
     def make_binding(self, event):
-        print self.click_id
-        print self.name
-        #self.unbind("<Button-1>", self.click_id)
-        print "click unbound, enter bound"
         self.enter_id = self.bind_all("<Return>", self.go_next)
 
     def clock(self, c):
@@ -87,41 +90,43 @@ class Task:
             start = self.start.get()
             return t - start
 
+    def get_answers(self):
+        answer_tuples = [(self.task_name + "_{}".format(qid + 1),
+                          a.get("answer"))
+                         for qid, a in self.answer_dic.items()]
+        return answer_tuples
+
 class StroopTask(Task, tk.Frame):
-    extra_info = ("In this task you must state " 
+    extra_info = ("In this task you must state "
                   "the correct number of digits")
 
     def __init__(self, master, mode, base):
         tk.Frame.__init__(self, master)
-        #self.pack(side = "top", fill = "both", expand = True)
-        self.name = "stroop" + str(mode)
-        stroopfont = tkFont.Font(self, weight = "bold", size = 20)
+        self.task_name = "stroop"
+        self.name = self.task_name + str(mode)
+        stroopfont = tkFont.Font(self, weight = "bold", size = 60)
         self.num_var = tk.StringVar(self)
         self.answer_var = tk.StringVar()
         self.number = tk.Label(self, text = "", font = stroopfont,
                                textvariable = self.num_var)
         self.answer = tk.Entry(self, textvariable = self.answer_var)
-        [w.pack(side = "top") for w in (self.number, self.answer)]
+        [w.pack(side = "top", anchor = "center")
+         for w in (self.number, self.answer)]
 
         for w in (self.answer, self.number):
             w.bindtags((self.name + "cognition_click",) + w.bindtags())
-
         if mode == "real":
             numeric_strings = ("555", "8", "99",
-                               "44", "1111", "5555", "77", 
+                               "44", "1111", "5555", "77",
                                "222", "33", "111")
-
         elif mode == "practice":
             numeric_strings = ("66", "777", "1", "222")
 
-
- 
         self.qid_answers = [(i, len(strg))
                             for i, strg in enumerate(numeric_strings)]
         Task.__init__(self, master, base)
         self.strings = enumerate(numeric_strings)
         self.new_number()
-
 
     def new_number(self):
         try:
@@ -151,35 +156,34 @@ class StroopTask(Task, tk.Frame):
     def end_task(self, event = "event"):
         self.number.pack_forget()
         self.bt.pack_forget()
-        self.next_task()
 
     def start_task(self):
         self.next_id = self.answer.bind("<Return>", self.get_answer)
         self.new_number()
 
-
 class RavenTask(Task, tk.Frame):
-    extra_info = ("In this task you must select the picture that " 
+    extra_info = ("In this task you must select the picture that "
                   "best completes the image.")
 
     def __init__(self, master, mode, base):
         tk.Frame.__init__(self, master)
         self.base = base
-
-        self.name = "raven" + str(mode)
+        self.task_name = "raven"
+        self.name = self.task_name + str(mode)
         stimuli = enumerate(self.get_images(mode))
         qobjects_list = [(i, self.make_choice(i, img, correct))
                          for i, (img, correct) in stimuli]
         self.qobjects = dict(qobjects_list)
         self.qid_answers = [(i, q.get("correct"))
                             for i, q in qobjects_list]
-    
+
         Task.__init__(self, master, base)
         self.show_choice(0)
 
     def get_images(self, mode):
+        raven_filenames = os.listdir(os.path.join(self.base, "raven", mode))
         raven_files = [os.path.join(self.base, "raven", mode, f)
-                       for f in os.listdir(os.path.join(self.base, "raven", mode)) if f[-3:] == "gif"]
+                       for f in raven_filenames if f[-3:] == "gif"]
         extras = len(self.base + mode + 2 * "raven") + 1
         raven_files.sort(key = lambda x: x.split("_xx")[0])
         correct = [self.get_correct(f) for f in raven_files]
@@ -211,7 +215,7 @@ class RavenTask(Task, tk.Frame):
         widgets = (stimuli, response)
         for w in widgets:
             w.bindtags((self.name + "cognition_click",) + w.bindtags())
- 
+
         qdic = {"widgets": widgets,
                 "var": response_var,
                 "correct": correct}
@@ -271,7 +275,8 @@ class Stroop(CognitionTab):
         CognitionTab.__init__(self, master, StroopTask)
 
 
+
+
 #root = tk.Tk()
-#cog = CognitionTab(root, Stroop)
 #raven = Raven(root, "practice")
 #stroop = Stroop(root, "practice")

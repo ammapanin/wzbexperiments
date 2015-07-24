@@ -1,0 +1,10 @@
+Please enter the following information.
+
+When you are ready, please press the 'Get date and time' button to continue.
+
+XXX
+
+Welcome to the {} experiment.
+
+{}
+XXX

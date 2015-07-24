@@ -30,14 +30,16 @@ from budget_payment import BudgetPayment
 
 
 ### Program version ####
-version = "2.1"
+version = "2.4"
 
 # version 1.0: Oriinal version sent out beginning of April 2015
 # version 1.2: added 2 makali hh, ensured version saved
 # version 1.35: fixed Udukunte; removed Keeranigere
 # version 1.36: Updated Kallapura
 # version 2.1: fixed Tattiguppe; added Byranakahalli, Banavasi
-
+# version 2.2: added Keeranigere, Belkere
+# version 2.3: added Keeranigere properly
+# version 2.4: added Mogenahalli properly
 
 textfilename = os.path.join(budgetpath, "budget_texts.txt")
 

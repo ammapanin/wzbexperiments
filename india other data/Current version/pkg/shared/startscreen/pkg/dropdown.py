@@ -254,7 +254,7 @@ class Dropdowns(tk.LabelFrame):
 
                 name = (row.get(shortname) +
                         " " + relationship + " " +
-                        row.get(shortrelation)).upper()
+                        row.get(shortrelation)).upper().strip()
 
                 wzb_hh_id = row.get("wzb.hh.id")
                 hh_dic = {"vid": row.get("village"),

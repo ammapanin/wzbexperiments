@@ -30,7 +30,8 @@ class Input(tk.Frame):
         if self.num_list == True:
             self.qvars = self.add_number_lists()
 
-        self.clickable_widgets = [self]
+        self.clickable_widgets = [self] 
+        self.is_active = True
 
     def add_number_lists(self):
         if self.qtype == "check" or self.qtype == "choice":
@@ -65,7 +66,8 @@ class Input(tk.Frame):
         return None
 
     def apply_check_conditions(self):
-        """Gets customised control functions and applies them for each check var
+        """Gets customised control functions and applies 
+        them for each check var
         """
         #In current form, assumes each check var only has ONE condition
         # CHANGE: make check conditions a list of lists
@@ -140,7 +142,8 @@ class Input(tk.Frame):
     def add_row_condition(self, logic_func, qobjects, cdic, answer = ""):
         """Adds either a single or multiple rows
 
-        Takes answer as an argument for compatibility with other condition types.
+        Takes answer as an argument for compatibility 
+        with other condition types.
         """
         row_name = cdic.get("row_name")
         if row_name == "get_name":
@@ -228,15 +231,23 @@ class Input(tk.Frame):
         return [(self.label, answer)]
 
     def been_answered(self):
-        answer = self.answer_var.get()
-        return answer != "x99"
-
+        """Checks if input initial var has been changed from 'x99'
+        Overidden for check vars and sliders, and text boxes.
+        TODO. uncomment when all controls fixed,
+        """
+        if self.is_active == True:
+            a = self.answer_var.get()
+            answered = a != "x99"
+        elif self.is_active != True:
+            answered = False
+        #return answered
+        return True
+        
     def make_inactive(self):
         [w.config(state = "disabled") for w in self.activity_widgets]
 
     def make_active(self):
         [w.config(state = "normal") for w in self.activity_widgets]
-
 
 class TextBox(Input):
     def __init__(self, master, **kwargs):
@@ -251,6 +262,9 @@ class TextBox(Input):
     def get_answer(self):
         answer = self.text.get("1.0", "end")
         return answer
+
+    def been_answered(self):
+        return True
 
 class DynamicText(TextBox):
     def __init__(self, master, **kwargs):
@@ -356,6 +370,8 @@ class Slider(Input, object):
         super(Slider, self).make_active()
         [l.config(fg = "black") for l in self.labs]
 
+    def been_answered(self):
+        return True
 
 class Dropdown(Input):
     def __init__(self, master, **kwargs):

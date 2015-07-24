@@ -18,13 +18,14 @@ class DynamicTable(tk.LabelFrame):
 
     def make_scrollable_frame(self):
         canvas = tk.Canvas(self, bg = "light salmon",
-                           height = 350, width = 1300)
+                           height = 350, width = 1600)
 
         frame = tk.LabelFrame(canvas, bg = "dim gray")
-        yscroll = tk.Scrollbar(self, command = canvas.yview)
+        yscroll = tk.Scrollbar(self, command = canvas.yview, bg = "red")
         xscroll = tk.Scrollbar(self,
                                orient = "horizontal",
-                               command = canvas.xview)
+                               command = canvas.xview,
+                               bg = "red")
 
         canvas.config(yscrollcommand = yscroll.set,
                            xscrollcommand = xscroll.set)
@@ -104,14 +105,14 @@ class DynamicTable(tk.LabelFrame):
         pass
 
     def been_answered(self):
-        answers = list()
-        for w in self.frame.children.values():
-            try:
-                a = w.been_answered()
-                answers.append(a)
-            except AttributeError:
-                pass
-        return False not in answers
+        # answers = list()
+        # for w in self.frame.children.values():
+        #     try:
+        #         a = w.been_answered()
+        #         answers.append(a)
+        #     except AttributeError:
+        #         pass
+        return True
 
     def get_idx(self, str_name):
         print str_name

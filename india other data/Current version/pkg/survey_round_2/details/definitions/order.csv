@@ -1,5 +1,5 @@
 qlabel,tab,
-"members,xgeneral,xhouse,xfood,xcognition task 1,xdurables,xexpenditure,xtransfers in,xtransfers out,xcognition task 2,xinsurance,xsavings and loans,xlending",,
+"members,xhouse,xgeneral,xfood,xcognition task 1,xdurables,xexpenditure,xtransfers in,xtransfers out,xcognition task 2,xinsurance,xsavings and loans,xlending",,
 members_left,members,
 table_members_left,members,
 members_new,members,
@@ -58,5 +58,5 @@ believe_god,general,
 smoke,general,
 drink,general,
 insurance,insurance,
-table_insurance,insurance,Please enter the following details
+table_insurance,insurance,"Please enter the following details. (For animals, please only consider payouts within the last 5 months)"
 table_payout,insurance,Please enter the following details for all insurance payouts received.

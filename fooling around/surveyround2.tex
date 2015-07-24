@@ -1,0 +1,1084 @@
+\documentclass{article}
+\usepackage{enumitem}\begin{document}
+\title{Survey Round 2}
+ \maketitle
+\begin{enumerate}
+\item {\bfseries Please rate your general health state (on a scale of 1 to 10)}\emph{ general\_health }
+\\min - 0, max - 10, interval - 1
+
+\item {\bfseries Did you have enough to eat in the last 12 months?}\emph{ eat }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries Did all members of your household have enough to eat in the last 12 months?}\emph{ eat\_household }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries Has your household faced any income shocks in the last 12 months?}\emph{ income\_shock }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries Please describe it.}\emph{ income\_shock\_describe }
+
+\item {\bfseries How much did it cost your household to address this shock (both in magnitude of lost income and the steps taken to address it)}\emph{ income\_shock\_cost }
+\\ \emph{ Rupees }min - 500, max - 10000, interval - 500
+\\ \emph{ Lakhs }min - 1, max - 50, interval - 1
+
+\item {\bfseries Has your household faced any health shocks in the last 12 months?}\emph{ health\_shock }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries How much did you spend to address this?}\emph{ health\_shock\_describe }
+\\ \emph{ Rupees }min - 500, max - 10000, interval - 500
+\\ \emph{ Lakhs }min - 1, max - 50, interval - 1
+
+\item {\bfseries Did your household face any agricultural shocks in the last 12 months?}\emph{ agricultural\_shock }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries Please select the options that best describe the situation}\emph{ agricultural\_shock\_describe }
+\begin{enumerate}
+\item Drought
+\item Flood
+\item Germination failure
+\item Delayed monsoon
+\item Irregular rainfall
+\item Pest and disease
+\item Post-harvest losses
+\item Low market prices
+\item Crop theft
+\item Crop destruction by animals
+\end{enumerate}
+\item {\bfseries How much did it cost you (either to address the shock or in lost income)?}\emph{ agricultural\_shock\_cost }
+\\ \emph{ Rupees }min - 500, max - 10000, interval - 500
+\\ \emph{ Lakhs }min - 1, max - 50, interval - 1
+
+\item {\bfseries How do you see yourself: are you generally a person who is fully prepared to take risks or do you try to avoid taking risks in general?}\emph{ risk\_general }
+\\min - 0, max - 10, interval - 1
+
+\item {\bfseries Please rate how willing you are to take risks with regard to your health.}\emph{ risk\_health }
+\\min - 0, max - 10, interval - 1
+
+\item {\bfseries Please rate how willing you are to take agricultural risks.}\emph{ risk\_agricultural }
+\\min - 0, max - 10, interval - 1
+
+\item {\bfseries When do you believe the rains will come this year?}\emph{ rains\_time }
+\begin{enumerate}
+\item middle of June
+\item end of June
+\item beginning of July
+\item middle of July
+\item end of July
+\item beginning of August
+\item middle of August
+\item end of August
+\end{enumerate}
+\item {\bfseries Do you believe they will be scanty, little, or plentiful?}\emph{ rains\_plentiful }
+\begin{enumerate}
+\item scanty
+\item little
+\item plentiful
+\end{enumerate}
+\item {\bfseries Do you believe in heaven?}\emph{ heaven }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries Do you believe in hell?}\emph{ hell }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries Do you believe in God?}\emph{ believe\_god }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries Do you smoke?}\emph{ smoke }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries Do you drink?}\emph{ drink }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries Within the last 12 months, has your household lent any money that you expect to be repaid to any of the following people?}\emph{ lend\_list }
+\begin{enumerate}
+\item Family
+\item Friends
+\item Employee
+\item Renter
+\end{enumerate}
+\item {\bfseries Table}\emph{ table\_lend }
+\begin{enumerate}[label*=\arabic*.]
+\item {\bfseries How many times has this recipient borrowed within the last 12 months?}\emph{ lend\_frequency }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries In total (NOT ONLY 12 months) what is the amount owed to these people?}\emph{ lend\_total }
+\\ \emph{ Rupees }min - 100, max - 10000, interval - 100
+\\ \emph{ Lakhs }min - 1, max - ,30, interval - 1
+
+\item {\bfseries What was the average amount borrowed each time? }\emph{ lend\_amount }
+\\ \emph{ Rupees }min - 100, max - 10000, interval - 100
+\\ \emph{ Lakhs }min - 1, max - ,30, interval - 1
+
+\end{enumerate}
+\item {\bfseries Is the house you live in owned by a member of your household?}\emph{ house\_own }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}\textbf{{\footnotesize NOTE} All family members should be considered. }
+
+\item {\bfseries How did your house obtain this dwelling?}\emph{ house\_obtain }
+\begin{enumerate}
+\item Privatised
+\item Purchased from a private person
+\item Newly built
+\item Cooperative arrangement
+\item Swapped
+\item Inherited by household head
+\item Inherited by spouse
+\item Gift or dowry
+\item Other
+\end{enumerate}
+\item {\bfseries How much did you pay for the unit?}\emph{ house\_pay }
+\\ \emph{ Rupees }min - 100, max - 100000, interval - 100
+\\ \emph{ Lakhs }min - 1, max - 30, interval - 0.25
+
+\item {\bfseries Do you pay property tax regularly?}\emph{ house\_tax }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries Do you have the legal title to the land or any document that shows ownership?}\emph{ house\_title }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries If you could sell this dwelling, how much of the total value would you get? (in rupees or lakhs)}\emph{ house\_sell }
+\\ \emph{ Rupees }min - 100, max - 100000, interval - 100
+\\ \emph{ Lakhs }min - 1, max - 30, interval - 0.25
+
+\item {\bfseries Can you estimate the amount you would receive if you rented this dwelling to another person?}\emph{ house\_rent }
+\\ \emph{ Rupees }min - 50, max - 100000, interval - 50
+\\ \emph{ Lakhs }min - 1, max - 30, interval - 0.25
+
+\item {\bfseries Which of the following has your household purchased in the last 12 months?}\emph{ consumption\_food }
+\begin{enumerate}
+\item Ragi
+\item Rice
+\item Wheat
+\item Red gram
+\item Black gram
+\item Green gram
+\item Horse gram
+\item Bengal gram
+\item Tomato
+\item Tubers (e.g onions, carrots)
+\item Leafy vegetables
+\item Eggs
+\item Milk and milk products
+\item Chicken, mutton or fish
+\end{enumerate}
+\item {\bfseries Table}\emph{ table\_consumption }
+\begin{enumerate}[label*=\arabic*.]
+\item {\bfseries Over the last 12 months, what quantity did your household consume out of the total produce? (in kg)}\emph{ food\_produce\_consume }
+\\ \emph{ kg }min - 10, max - 100, interval - 10
+\\ \emph{ quintiles }min - 1, max - 10, interval - 1
+
+\item {\bfseries How much did your household consume of this product in the last 12 months?}\emph{ food\_grow\_consume }
+\\ \emph{ kg }min - 10, max - 100, interval - 10
+\\ \emph{ quintiles }min - 1, max - 10, interval - 1
+
+\item {\bfseries How many months in the past 12 months did your household consume this product that you grew yourselves?}\emph{ food\_grow\_months }
+\begin{enumerate}
+\item 0
+\item 1
+\item 2
+\item 3
+\item 4
+\item 5
+\item 6
+\item 7
+\item 8
+\item 9
+\item 10
+\item 11
+\item 12
+\end{enumerate}
+\item {\bfseries How much of this product did you receive as a gift over the last 12 months?}\emph{ food\_gift }
+\\ \emph{ kg }min - 10, max - 100, interval - 10
+\\ \emph{ quintiles }min - 1, max - 10, interval - 1
+
+\item {\bfseries How much do you spend to buy this product per month on average? (in Rupees)}\emph{ food\_purchase\_spend }
+\\min - 10, max - 10000, interval - 50
+
+\item {\bfseries How many months in the past 12 months did your household purchase this product?}\emph{ food\_purchase\_months }
+\begin{enumerate}
+\item 0
+\item 1
+\item 2
+\item 3
+\item 4
+\item 5
+\item 6
+\item 7
+\item 8
+\item 9
+\item 10
+\item 11
+\item 12
+\end{enumerate}
+\end{enumerate}
+\item {\bfseries Does your household own any of the following items?}\emph{ durables }
+\begin{enumerate}
+\item LPG Stove
+\item Charcoal Stove
+\item  Firewood Stove
+\item Mobile phone
+\item Refrigerator
+\item Washing Machine
+\item Sewing or knitting machine
+\item Mixer
+\item Fan
+\item Television
+\item Video player
+\item Radio or Tape player
+\item Camera
+\item Bicycle
+\item Motorcycle
+\item Car
+\item Truck or tractor
+\item Bullock cart
+\end{enumerate}
+\item {\bfseries Table}\emph{ table\_durables }
+\begin{enumerate}[label*=\arabic*.]
+\item {\bfseries Did you purchase it or receive it as a gift for payment for services?}\emph{ durable\_purchase }
+\begin{enumerate}
+\item Purchase
+\item Gift
+\end{enumerate}
+\item {\bfseries If you wanted to sell your item today, how much would you receive for it?}\emph{ durable\_sell }
+\\ \emph{ Rupees }min - 50, max - 100000, interval - 50
+\\ \emph{ Lakhs }min - 1, max - 10, interval - 0.5
+
+\item {\bfseries How much did you pay for it?}\emph{ durable\_pay }
+\\ \emph{ Rupees }min - 50, max - 100000, interval - 50
+\\ \emph{ Lakhs }min - 1, max - 10, interval - 0.5
+
+\item {\bfseries How much was it worth when you received it?}\emph{ durable\_value }
+\\ \emph{ Rupees }min - 50, max - 100000, interval - 50
+\\ \emph{ Lakhs }min - 1, max - 10, interval - 0.5
+
+\item {\bfseries How many years ago did you acquire your item?}\emph{ durable\_years }
+\begin{enumerate}
+\item 0
+\item 1
+\item 2
+\item 3
+\item 4
+\item 5
+\item 6
+\item 7
+\item 8
+\item 9
+\item 10
+\item 11
+\item 12
+\item 13
+\item 14
+\item 15
+\item 16
+\item 17
+\item 18
+\item 19
+\item 20
+\end{enumerate}
+\end{enumerate}
+\item {\bfseries Which of the following products has your household used or purchased in the last 12 months? }\emph{ expenditure }
+\begin{enumerate}
+\item Men's clothing
+\item Children's clothing
+\item Women's clothing and footwear
+\item Household linens (e.g towels, curtains, floor mat)
+\item Personal services (e.g haircuts, gym, beauty parlour)
+\item Tobacco
+\item Lottery tickets
+\item Travel fares (e.g. bus, trains, auto, 2 wheeler)
+\item Traditional medicines
+\item Modern medicines and health services (e.g doctor fees, hospital charges, etc.)
+\item Books, stationary and children's toys
+\item Communication expenses (e.g. mobile, post, courrier)
+\item Household and toilet sanitary items
+\item  Non-food kitchen expenses (e.g. matches, utensils)
+\item Electrical items (e.g. light bulbs, water motor, wiring)
+\item Vehicle repair and maintenance
+\item Excursions
+\item Charity
+\item Religious worshipxHousing and property tax
+\item Legal services
+\item Marriages, births and other ceremonies
+\item Dowry
+\item Funeral expenses
+\end{enumerate}
+\item {\bfseries Table}\emph{ table\_expenditure }
+\begin{enumerate}[label*=\arabic*.]
+\item {\bfseries What was the value of all gifts of this product your household received in the last 12 months?}\emph{ cosmetics\_gifts\_value }
+\\ \emph{ Rupees }min - 0, max - 100000, interval - 50
+\\ \emph{ Lakhs }min - 1, max - 10, interval - 0.5
+
+\item {\bfseries Did your household receive any gifts of this product in the last 12 months?}\emph{ cosmetics\_gifts }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries How much did your household spend on this product in the last 12 months?}\emph{ cosmetics\_months }
+\\ \emph{ Rupees }min - 0, max - 100000, interval - 50
+\\ \emph{ Lakhs }min - 1, max - 10, interval - 0.5
+
+\item {\bfseries How much did your household spend on this product in the last 30 days?}\emph{ cosmetics\_days }
+\\ \emph{ Rupees }min - 0, max - 100000, interval - 50
+\\ \emph{ Lakhs }min - 1, max - 10, interval - 0.5
+
+\end{enumerate}
+\item {\bfseries What are the names of the persons who sent assistance to this household during the past 12 months? (Please enter name as many times as the person sent assistance)}\emph{ donors }
+
+\item {\bfseries Table}\emph{ table\_assistance }
+\begin{enumerate}[label*=\arabic*.]
+\item {\bfseries How is the related to this member?}\emph{ donor\_member\_relation }
+\begin{enumerate}
+\item Father/Mother
+\item Son/Daughter
+\item Grandparent
+\item Nephew/Neice
+\item Husband/Wife
+\item Uncle/Aunt
+\item Grandchild
+\item Sister
+\item Brother
+\item Beegaru
+\item Village leader
+\item Political leader
+\item Caste leader
+\item Other
+\end{enumerate}
+\item {\bfseries What are the main reasons the donor gave this support?}\emph{ donor\_reasons }
+\begin{enumerate}
+\item Child support
+\item Educational expenses
+\item Medical expenses
+\item Wedding expenses
+\item Funeral expenses
+\item Investment in household enterprise
+\item Purchase of a durable good
+\item Purchase of livestock
+\item Purchase of land
+\item Land development
+\item Logistical
+\item Other
+\end{enumerate}
+\item {\bfseries Which member of the household did the donor mainly send this assistance for? (Please select head if money mainly for whole household)}\emph{ donor\_member }
+\begin{enumerate}
+\item members
+\end{enumerate}
+\item {\bfseries How much money has your household received from the donor in the last 12 months? }\emph{ donor\_household }
+\\ \emph{ Rupees }min - 10, max - 10000, interval - 10
+\\ \emph{ Lakhs }min - 1, max - 20, interval - 0.25
+
+\item {\bfseries Has the household also received any assistance from the donor  in the form of food or goods over the last 12 months?}\emph{ donor\_goods }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries Is the donor male or female?}\emph{ donor\_gender }
+\begin{enumerate}
+\item Male
+\item Female
+\end{enumerate}
+\item {\bfseries How is the donor related to the head of the household?}\emph{ donor\_head\_relation }
+\begin{enumerate}
+\item Father/Mother
+\item Son/Daughter
+\item Grandparent
+\item Nephew/Neice
+\item Husband/Wife
+\item Uncle/Aunt
+\item Grandchild
+\item Sister
+\item Brother
+\item Beegaru
+\item Village leader
+\item Political leader
+\item Caste leader
+\item Other
+\end{enumerate}
+\item {\bfseries Will the household repay the amount of the assistance or is there interest?}\emph{ donor\_interest }
+\begin{enumerate}
+\item Interest
+\item No interest
+\end{enumerate}
+\item {\bfseries Where does this donor live?}\emph{ donor\_place }
+\begin{enumerate}
+\item within village
+\item within taluk
+\item within district
+\item within state
+\item outside state
+\end{enumerate}
+\item {\bfseries What is the approximate value in cash of food or goods given by the donor?}\emph{ donor\_cash }
+\\ \emph{ Rupees }min - 10, max - 10000, interval - 10
+\\ \emph{ Lakhs }min - 1, max - 20, interval - 0.25
+
+\item {\bfseries Must the household repay the assistance sent by the donor?}\emph{ donor\_repay }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\end{enumerate}
+\item {\bfseries Within the last 12 months, has your household received assistance from any of the following sources? }\emph{ institution\_payment }
+\begin{enumerate}
+\item State pension
+\item Survivor's or dependent pension
+\item Old age pension
+\item Physically handicapped pension
+\item Housing scheme
+\item Pre or post natal nutritional support
+\item Leasing or rental income (land/house)
+\item Sale of assets
+\end{enumerate}
+\item {\bfseries Table}\emph{ table\_institution }
+\begin{enumerate}[label*=\arabic*.]
+\item {\bfseries How many payments were received within the last 12 months?}\emph{ institution\_payment\_nr }
+\begin{enumerate}
+\item 0
+\item 1
+\item 2
+\item 3
+\item 4
+\item 5
+\item 6
+\item 7
+\item 8
+\item 9
+\item 10
+\item 11
+\item 12
+\item 13
+\item 14
+\item 15
+\item 16
+\item 17
+\item 18
+\item 19
+\item 20
+\end{enumerate}
+\item {\bfseries What was the average amount of each payment?}\emph{ institution\_payment\_amount }
+\\ \emph{ Rupees }min - 10, max - 100000, interval - 10
+\\ \emph{ Lakhs }min - 1, max - 20, interval - 0.25
+
+\end{enumerate}
+\item {\bfseries Please check all the education schemes your household has benefited from in the last 12 months}\emph{ education\_transfers }
+\begin{enumerate}
+\item Free bicycle
+\item Free uniforms and schoolbags
+\item Scholarship
+\item Mid-day meal
+\item Health tablets
+\end{enumerate}
+\item {\bfseries Please estimate the total cash value of all these schemes}\emph{ education\_value }
+\\ \emph{ Rupees }min - 10, max - 100000, interval - 10
+\\ \emph{ Lakhs }min - 1, max - 20, interval - 0.25
+
+\item {\bfseries Please check all the employment schemes your household has benefited from in the last 12 months}\emph{ employment\_transfers }
+\begin{enumerate}
+\item Navachetama scheme
+\item RTO office scheme for professional driving
+\item Social welfare dept. driving scheme
+\item Coaching and allied scheme for examinations
+\end{enumerate}
+\item {\bfseries Please estimate the total cash value of all these schemes}\emph{ employment\_value }
+\\ \emph{ Rupees }min - 10, max - 100000, interval - 10
+\\ \emph{ Lakhs }min - 1, max - 20, interval - 0.25
+
+\item {\bfseries Which household members have sent assistance out and how many times did they send out assistance within the last 12 months?}\emph{ members\_transfers }
+\begin{enumerate}
+\item members
+\end{enumerate}
+\item {\bfseries Table}\emph{ table\_assistance\_out }
+\begin{enumerate}[label*=\arabic*.]
+\item {\bfseries What is the total cash value of assistance sent out by this member?}\emph{ assistance\_out\_value }
+\\ \emph{ Rupees }min - 10, max - 10000, interval - 10
+\\ \emph{ Lakhs }min - 1, max - ,30, interval - 0.25
+
+\item {\bfseries Does the family member expect to receive interest?}\emph{ assistance\_out\_interest }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries What are the main reasons the family member gave this support?}\emph{ assistance\_out\_reasons }
+\begin{enumerate}
+\item Child support
+\item Educational expenses
+\item Medical expenses
+\item Wedding expenses
+\item Funeral expenses
+\item Investment in household enterprise
+\item Purchase of a durable good
+\item Purchase of livestock
+\item Purchase of land
+\item Land development
+\item Logistical
+\item Other
+\end{enumerate}
+\item {\bfseries What is the relationship of the recipient of this assistance to the household member?}\emph{ assistance\_out\_relationship }
+\begin{enumerate}
+\item Father/Mother
+\item Son/Daughter
+\item Grandparent
+\item Nephew/Neice
+\item Husband/Wife
+\item Uncle/Aunt
+\item Grandchild
+\item Sister
+\item Brother
+\item Beegaru
+\item Village leader
+\item Political leader
+\item Caste leader
+\item Other
+\end{enumerate}
+\item {\bfseries Does the family member expect to receive the value of this transfer back?}\emph{ assistance\_out\_payback }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\end{enumerate}
+\item {\bfseries How many insurance policies of each type does your household own?}\emph{ insurance }
+\begin{enumerate}
+\item Yeshavini Health Insurance
+\item Suvarna arogya Chaitanya Programme
+\item Private health insurance
+\item Jeevan Jyothi Birma Yojana
+\item Suruksha Birma Yojana
+\item  Other accident insurances
+\item Crop
+\item Vehicle
+\item Animal
+\end{enumerate}\textbf{{\footnotesize NOTE} Animal includes cows and buffalos. }
+
+\item {\bfseries Table}\emph{ table\_insurance }
+\begin{enumerate}[label*=\arabic*.]
+\item {\bfseries What is the frequency of your payments?}\emph{ insurance\_frequency }
+\begin{enumerate}
+\item single payment
+\item daily
+\item weekly
+\item fortnightly
+\item monthly
+\item quarterly
+\item every 6 months
+\item yearly
+\end{enumerate}
+\item {\bfseries Which month will you have to renew the insurance?}\emph{ insurance\_renew\_month }
+\begin{enumerate}
+\item 01
+\item 02
+\item 03
+\item 04
+\item 05
+\item 06
+\item 07
+\item 08
+\item 09
+\item 10
+\item 11
+\item 12
+\end{enumerate}
+\item {\bfseries Frequency of renewal}\emph{ insurance\_renew }
+\begin{enumerate}
+\item yearly
+\item once in three years
+\item once in five years
+\end{enumerate}
+\item {\bfseries How much do you pay as your premium?}\emph{ insurance\_amount }
+\\ \emph{ Rupees }min - 0, max - 10000, interval - 10
+\\ \emph{ Lakhs }min - 1, max - 5, interval - 0.5
+
+\item {\bfseries Which month did you first purchase this insurance?}\emph{ insurance\_month }
+\begin{enumerate}
+\item 01
+\item 02
+\item 03
+\item 04
+\item 05
+\item 06
+\item 07
+\item 08
+\item 09
+\item 10
+\item 11
+\item 12
+\end{enumerate}
+\item {\bfseries Which year did you first purchase this insurance?}\emph{ insurance\_year }
+\begin{enumerate}
+\item 1980
+\item 1981
+\item 1982
+\item 1983
+\item 1984
+\item 1985
+\item 1986
+\item 1987
+\item 1988
+\item 1989
+\item 1990
+\item 1991
+\item 1992
+\item 1993
+\item 1994
+\item 1995
+\item 1996
+\item 1997
+\item 1998
+\item 1999
+\item 2000
+\item 2001
+\item 2002
+\item 2003
+\item 2004
+\item 2005
+\item 2006
+\item 2007
+\item 2008
+\item 2009
+\item 2010
+\item 2011
+\item 2012
+\item 2013
+\item 2014
+\item 2015
+\end{enumerate}
+\end{enumerate}
+\item {\bfseries Table}\emph{ table\_payout }
+\begin{enumerate}[label*=\arabic*.]
+\item {\bfseries Amount claimed}\emph{ insurance\_payout\_claim }
+\\ \emph{ Rupees }min - 100, max - 100000, interval - 100
+\\ \emph{ Lakhs }min - 1, max - 30, interval - 0.5
+
+\item {\bfseries Amount received}\emph{ insurance\_payout\_received }
+\\ \emph{ Rupees }min - 100, max - 100000, interval - 100
+\\ \emph{ Lakhs }min - 1, max - 30, interval - 0.5
+
+\item {\bfseries Month payout received}\emph{ insurance\_payout\_date }
+\begin{enumerate}
+\item 01
+\item 02
+\item 03
+\item 04
+\item 05
+\item 06
+\item 07
+\item 08
+\item 09
+\item 10
+\item 11
+\item 12
+\end{enumerate}
+\item {\bfseries Are you satisfied with the product?}\emph{ insurance\_payout\_satisfaction }
+\begin{enumerate}
+\item satisfied
+\item dissatisfied but no other options
+\item planning to switch insurers
+\end{enumerate}
+\item {\bfseries Year payout received}\emph{ insurance\_payout\_month }
+\begin{enumerate}
+\item 1980
+\item 1981
+\item 1982
+\item 1983
+\item 1984
+\item 1985
+\item 1986
+\item 1987
+\item 1988
+\item 1989
+\item 1990
+\item 1991
+\item 1992
+\item 1993
+\item 1994
+\item 1995
+\item 1996
+\item 1997
+\item 1998
+\item 1999
+\item 2000
+\item 2001
+\item 2002
+\item 2003
+\item 2004
+\item 2005
+\item 2006
+\item 2007
+\item 2008
+\item 2009
+\item 2010
+\item 2011
+\item 2012
+\item 2013
+\item 2014
+\item 2015
+\end{enumerate}
+\item {\bfseries Time between claim and settlements}\emph{ insurance\_payout\_delay }
+\begin{enumerate}
+\item immediately
+\item 1 week
+\item 2weeks
+\item 1 month
+\item 2 months
+\item 3 months
+\item 4 months
+\item 5 months
+\item 6 monhts
+\item more than 6 monhts
+\end{enumerate}
+\end{enumerate}
+\item {\bfseries In case there is an emergency, how much cash does your household have? }\emph{ cash }
+\\ \emph{ Rupees }min - 0, max - 100000, interval - 50
+\\ \emph{ Lakhs }min - 1, max - 30, interval - 0.5
+
+\item {\bfseries Which types of bonds and savings programs does your household have?}\emph{ bonds }
+\begin{enumerate}
+\item RD
+\item Chit fund
+\item Suknya Samrudhi
+\end{enumerate}
+\item {\bfseries Table}\emph{ table\_bonds }
+\begin{enumerate}[label*=\arabic*.]
+\item {\bfseries Year of maturity}\emph{ bond\_maturity\_year }
+\begin{enumerate}
+\item 1980
+\item 1981
+\item 1982
+\item 1983
+\item 1984
+\item 1985
+\item 1986
+\item 1987
+\item 1988
+\item 1989
+\item 1990
+\item 1991
+\item 1992
+\item 1993
+\item 1994
+\item 1995
+\item 1996
+\item 1997
+\item 1998
+\item 1999
+\item 2000
+\item 2001
+\item 2002
+\item 2003
+\item 2004
+\item 2005
+\item 2006
+\item 2007
+\item 2008
+\item 2009
+\item 2010
+\item 2011
+\item 2012
+\item 2013
+\item 2014
+\item 2015
+\end{enumerate}
+\item {\bfseries Has the household member taken any loans out of this?}\emph{ bond\_loans }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries Amount expected at maturity}\emph{ bond\_maturity\_amount }
+\\ \emph{ Rupees }min - 100, max - 10000, interval - 100
+\\ \emph{ Lakhs }min - 1, max - 30, interval - 1
+
+\item {\bfseries Year started}\emph{ bond\_year }
+\begin{enumerate}
+\item 1980
+\item 1981
+\item 1982
+\item 1983
+\item 1984
+\item 1985
+\item 1986
+\item 1987
+\item 1988
+\item 1989
+\item 1990
+\item 1991
+\item 1992
+\item 1993
+\item 1994
+\item 1995
+\item 1996
+\item 1997
+\item 1998
+\item 1999
+\item 2000
+\item 2001
+\item 2002
+\item 2003
+\item 2004
+\item 2005
+\item 2006
+\item 2007
+\item 2008
+\item 2009
+\item 2010
+\item 2011
+\item 2012
+\item 2013
+\item 2014
+\item 2015
+\end{enumerate}
+\item {\bfseries Month of maturity}\emph{ bond\_maturity\_month }
+\begin{enumerate}
+\item 01
+\item 02
+\item 03
+\item 04
+\item 05
+\item 06
+\item 07
+\item 08
+\item 09
+\item 10
+\item 11
+\item 12
+\end{enumerate}
+\item {\bfseries Monthly payment}\emph{ bond\_monthly\_payment }
+\\ \emph{ Rupees }min - 10, max - 10000, interval - 50
+\\ \emph{ Lakhs }min - 1, max - 30, interval - 25
+
+\item {\bfseries Which household members own this?}\emph{ bond\_members }
+\begin{enumerate}
+\item members
+\end{enumerate}
+\item {\bfseries Month started}\emph{ bond\_month }
+\begin{enumerate}
+\item 01
+\item 02
+\item 03
+\item 04
+\item 05
+\item 06
+\item 07
+\item 08
+\item 09
+\item 10
+\item 11
+\item 12
+\end{enumerate}
+\end{enumerate}
+\item {\bfseries How many of the following do members of your household participate in?}\emph{ savings\_accounts }
+\begin{enumerate}
+\item Bank savings account
+\item Self-help group
+\item Joint Liability group
+\item Cooperative societies (farmer or producer or diary)
+\item Post office account
+\item Thrift society (community based)
+\item NGO
+\end{enumerate}
+\item {\bfseries Table}\emph{ table\_savings }
+\begin{enumerate}[label*=\arabic*.]
+\item {\bfseries Average amount per saving (in Rupees)}\emph{ savings\_payment }
+\\ \emph{ Rupees }min - 10, max - 10000, interval - 50
+\\ \emph{ Lakhs }min - 1, max - 30, interval - 25
+
+\item {\bfseries Has the household member taken any loans out of this?}\emph{ savings\_loan }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries Year started}\emph{ savings\_start\_year }
+\begin{enumerate}
+\item 1980
+\item 1981
+\item 1982
+\item 1983
+\item 1984
+\item 1985
+\item 1986
+\item 1987
+\item 1988
+\item 1989
+\item 1990
+\item 1991
+\item 1992
+\item 1993
+\item 1994
+\item 1995
+\item 1996
+\item 1997
+\item 1998
+\item 1999
+\item 2000
+\item 2001
+\item 2002
+\item 2003
+\item 2004
+\item 2005
+\item 2006
+\item 2007
+\item 2008
+\item 2009
+\item 2010
+\item 2011
+\item 2012
+\item 2013
+\item 2014
+\item 2015
+\end{enumerate}
+\item {\bfseries Which household members own this?}\emph{ savings\_members }
+\begin{enumerate}
+\item members
+\end{enumerate}
+\item {\bfseries Total amount saved since start}\emph{ savings\_amount }
+\\ \emph{ Rupees }min - 100, max - 10000, interval - 100
+\\ \emph{ Lakhs }min - 1, max - 30, interval - 1
+
+\item {\bfseries Frequency of savings}\emph{ savings\_frequency }
+\begin{enumerate}
+\item weekly
+\item fortnightly
+\item monthly
+\end{enumerate}
+\item {\bfseries Month started}\emph{ savings\_start\_month }
+\begin{enumerate}
+\item 01
+\item 02
+\item 03
+\item 04
+\item 05
+\item 06
+\item 07
+\item 08
+\item 09
+\item 10
+\item 11
+\item 12
+\end{enumerate}
+\end{enumerate}
+\item {\bfseries Has your household borrowed any money that you must repay from the following sources within the last 12 months?}\emph{ borrow\_list }
+\begin{enumerate}
+\item Family
+\item Friends
+\item Landlord or Employer
+\item Goldsmiths or Pawnbroker
+\end{enumerate}
+\item {\bfseries Table}\emph{ table\_borrowing }
+\begin{enumerate}[label*=\arabic*.]
+\item {\bfseries Agreed end year of loan}\emph{ borrow\_year\_end }
+\begin{enumerate}
+\item 2012
+\item 2013
+\item 2014
+\item 2015
+\end{enumerate}
+\item {\bfseries Month of loan start}\emph{ borrow\_month }
+\begin{enumerate}
+\item 01
+\item 02
+\item 03
+\item 04
+\item 05
+\item 06
+\item 07
+\item 08
+\item 09
+\item 10
+\item 11
+\item 12
+\end{enumerate}
+\item {\bfseries Agreed end month of loan}\emph{ borrow\_month\_end }
+\begin{enumerate}
+\item 01
+\item 02
+\item 03
+\item 04
+\item 05
+\item 06
+\item 07
+\item 08
+\item 09
+\item 10
+\item 11
+\item 12
+\end{enumerate}
+\item {\bfseries Has this loan been fully repaid?}\emph{ borrow\_paid }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries What was the yearly rate of interest for the loan? (in %)}\emph{ borrow\_interest }
+\\min - 0, max - 36, interval - 1
+
+\item {\bfseries What was the amount borrowed within the last 36 months?}\emph{ borrow\_amount }
+\\ \emph{ Rupees }min - 10, max - 10000, interval - 50
+\\ \emph{ Lakhs }min - 1, max - 30, interval - 25
+
+\item {\bfseries Did you receive a government subsidy for this loan?}\emph{ borrow\_subsidy }
+\begin{enumerate}
+\item Yes
+\item No
+\end{enumerate}
+\item {\bfseries Year of loan start}\emph{ borrow\_year }
+\begin{enumerate}
+\item 2012
+\item 2013
+\item 2014
+\item 2015
+\end{enumerate}
+\item {\bfseries How much was the subsidy?}\emph{ borrow\_subsidy\_amount }
+\\ \emph{ Rupees }min - 100, max - 10000, interval - 100
+\\ \emph{ Lakhs }min - 1, max - 30, interval - 0.5
+
+\item {\bfseries What were the consequences of not paying?}\emph{ borrow\_default }
+\begin{enumerate}
+\item Loan waiver
+\item Higher interest rates
+\item Seized collateral
+\end{enumerate}
+\item {\bfseries In total (NOT ONLY 12 months) what is the amount owed to this source of borrowing?}\emph{ borrow\_total }
+\\min - 0, max - 1000, interval - 10
+
+\item {\bfseries What were the reasons for this loan?}\emph{ borrow\_reason }
+\begin{enumerate}
+\item Child support
+\item Educational expenses
+\item Medical expenses
+\item Wedding expenses
+\item Funeral expenses
+\item Investment in household enterprise
+\item Purchase of a durable good
+\item Purchase of livestock
+\item Purchase of land
+\item Land development
+\item Crop loan
+\item Logistical
+\item Other
+\end{enumerate}
+\end{enumerate}
+\end{enumerate}
+\end{document}

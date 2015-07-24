@@ -58,7 +58,9 @@ class Question(tk.Frame):
         qtext = "{}. {}".format(lab_num, lab_text)
         lab = tk.Label(self,
                        text = qtext,
-                       font = title_font)
+                       font = title_font,
+                       wrap = 1000,
+                       justify = "left")
         lab.pack(side = "top", expand = True, anchor = "w")
         return lab
 
@@ -81,6 +83,11 @@ class Question(tk.Frame):
         return answer
 
     def been_answered(self):
+        """Been answered method on question level
+
+        Takes input from either table or single answer.
+        Returns list:  [(question idx, True/False)...]
+        """
         answered = self.answer.been_answered()
         q = self.options.get("qidx")
         return q, answered

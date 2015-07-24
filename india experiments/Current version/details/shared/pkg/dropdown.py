@@ -47,12 +47,10 @@ class Participation(tk.LabelFrame):
             self.pack_forget()
             self.interviewee.member_var.set("")
             [v.set("") for v in self.interviewee.correction_vars]
-
         return None
 
 
 class Dropdowns(tk.LabelFrame):
-
     def __init__(self, master, *args, **kwargs):
         tk.LabelFrame.__init__(self, master, *args, **kwargs)
         self.pack(fill = "x", expand = True)
@@ -178,7 +176,6 @@ class Dropdowns(tk.LabelFrame):
             enum = csv.reader(enumfile)
             enumerators_csv = dict([(int(e[1]), e[0])
                                 for e in enum])
-
         def pad(num_in):
             num = str(num_in)
             pad = 2 - len(num)
@@ -189,7 +186,6 @@ class Dropdowns(tk.LabelFrame):
                                  in sorted(enumerators_csv.items())])
 
         enumerators = tuple(sorted(self.name_enumid.keys()))
-
         return enumerators
 
 
@@ -224,8 +220,6 @@ class Dropdowns(tk.LabelFrame):
         villages = tuple(self.name_vid.keys())
 
         return taluks, villages
-
-
 
     def get_households(self):
         shortration = "outputRationcard_number"
@@ -273,11 +267,6 @@ class Dropdowns(tk.LabelFrame):
 
         return households
 
-
-
-
-
-
     def get_members(self):
         members_path = os.path.join(self.data_path,
                                "members.csv")
@@ -307,11 +296,8 @@ class Dropdowns(tk.LabelFrame):
 
             #{"names": list(), "wzb.ind.ids": list(),
 
-            member_lists = [dict()
-                            for i in heads]
-
+            member_lists = [dict() for i in heads]
             self.members = dict(zip(heads, member_lists))
-
 
             name_details = ("name",
                             "name_initials",
@@ -329,8 +315,9 @@ class Dropdowns(tk.LabelFrame):
                 try:
                     m_idx = int(member_name[2])
                     gender = member_name[3]
-                    general_relation = member_relations[m_idx]
-                    default = general_relation.get("1")
+                    general_relation = member_relations.get(m_idx,
+                                                            {"UNKNOWN":"UNKNOWN"})
+                    default = general_relation.get("1", "UNKNOWN")
                     relationship = general_relation.get(gender, default)
                 except ValueError:
                     relationship = " "

@@ -1,0 +1,25 @@
+In this experiment, you will have the chance to allocate a set of tokens between two investments. 
+
+There will be TWO tasks within the experiment.
+
+You will now start with the {} task.
+
+{}
+XXX
+In the RISK task, you will have the chance to determine the final lottery you play. 
+You will allocate 50 tokens to two plates. 
+Each plate will multiply the tokens by a different number. 
+When you have allocated all your tokens, the number of tokens x the price on the plate will determine the lottery you play. 
+All lotteries are 50 - 50 lotteries and will be paid TOMORROW.
+
+Please begin the example with you enumerator.
+
+XXX
+In the TIME task, you will receive two direct payments. 
+You will choose how much money you receive 
+You will allocate 50 tokens to two plates. Each plate will multiply the tokens by a different number.
+
+First you will have to make choice for payment in either {} or {} months. 
+After you have answered those questions, you will have to make an allocation for payment in {} or {} months.
+
+Please begin the example with your enumerator.

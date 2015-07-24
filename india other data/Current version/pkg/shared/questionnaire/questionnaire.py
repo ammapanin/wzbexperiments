@@ -15,10 +15,13 @@ class Questionnaire(tk.Frame):
 
         Questionnaire initial dic accepts the following options:
         title: the questionnaire title
+        stimuli: list of (tk.Frame objects, tab name) that contain additional
+                 non-text based stimuli
         csv_path: path to the actual csv questions
         data_path: path to the folder where data will be written
         next_function: function to show the next section
         """
+
         tk.Frame.__init__(self, master)
         self.pack(fill = "both", expand = True, anchor = "w")
 
@@ -48,10 +51,15 @@ class Questionnaire(tk.Frame):
                                  for tab, tab_name in additional_tabs]
 
         bt_frame.pack(side = "top")
-        self.complete_bt = tk.Button(bt_frame,
-                                     text = "Validate",
-                                     command = self.validate)
-        self.complete_bt.pack(side = "bottom")
+        self.complete_bt, self.save_bt = self.make_control_buttons(bt_frame)
+
+    def make_control_buttons(self, master):
+        buttons = [("Validate", self.validate),
+                   ("Save", self.save)]
+        bts = [tk.Button(master, text = txt, command = cmd)
+               for txt, cmd in buttons]
+        [bt.pack(side = "left") for bt in bts]
+        return bts
 
     def make_tabs(self, question_frame):
         tab_frames = dict([(txt,
@@ -132,7 +140,8 @@ class Questionnaire(tk.Frame):
         title_text = self.options.get("title")
         title = tk.Label(master, text = title_text, font = title_font)
         title.pack(side = "top", pady = 10)
-        self.invalid_label = tk.Label(master)
+        self.invalid_label = tk.Label(master, justify = "left",
+                                      bg = "LightGoldenrod1")
         return None
 
     def get_stock_list(self, string):
@@ -378,7 +387,6 @@ class Questionnaire(tk.Frame):
 
         #self.trial_questions = questions
         qobjects = [Question(**qdic) for qdic in questions]
-
         self.qlab_object = dict([(q.qlabel, q) for q in qobjects])
         self.qlab_idx = dict([(q.qlabel, q.qidx) for q in qobjects])
         self.question_cycle = [(q.qlabel, q.qidx) for q in qobjects]
@@ -387,14 +395,13 @@ class Questionnaire(tk.Frame):
             q.lab_object = self.qlab_object
             q.lab_idx = self.qlab_idx
             q.qcycle = self.question_cycle
-            #q.options["lab_qobject_dic"] = self.qlab_object
 
         [q.apply_conditions() for q in qobjects]
-
         for q in qobjects:
             if q.options.get("type") == "dynamic_text":
                 tab_str = q.options.get("str_table")
-                q.answer.options["table"] = self.qlab_object.get(tab_str).answer
+                qtab = self.qlab_object.get(tab_str).answer
+                q.answer.options["table"] = qtab
         return qobjects
 
     def go_next(self, event):
@@ -415,7 +422,6 @@ class Questionnaire(tk.Frame):
             print "Questionnaire completed"
         return None
 
-
     def set_key_bindings(self):
         self.bind_all("<Return>", self.go_next)
 
@@ -426,6 +432,7 @@ class Questionnaire(tk.Frame):
                    if value == False]
 
         if len(invalid) == 0:
+            self.invalid_label.config(text = "Questionnaire complete")
             self.complete_bt.config(text = "Complete",
                                     command = self.complete_questionnaire)
         elif len(invalid) > 0:
@@ -440,22 +447,38 @@ class Questionnaire(tk.Frame):
 
         invalid_text =  "Please answer questions {}".format(qlist)
         self.invalid_label.config(text = invalid_text)
-        self.invalid_label.pack(side = "top")
+        self.invalid_label.pack(side = "top", anchor = "w")
 
     def get_answers(self):
-        answers = [q.get_answer() for q in self.qobjects]
+        text_answers = [q.get_answer() for q in self.qobjects]
+        stimuli_answers = [s.get_answers() for s in self.stimuli_tabs]
+        answer_lists = text_answers + stimuli_answers
+        answers = list()
+        for l in answer_lists:
+            for a in l:
+                if len(a) > 1:
+                    answers.append(a)
         return answers
 
-    def save_answers(self):
-        data_path = self.options.get("data_path")
-        identifiers = ("tid", "vid", "interview_wzb.ind.id")
-        tid, vid, hid = [self.options.get(idx) for idx in identifiers]
+    def save(self):
+        """
+        Writes a snapshot of whatever answers are currently in place
+        to a csv file.
 
-        fname = "lcf_{}_{}_{}".format(tid, vid, hid)
+        Data is saved with the enumid, tid, vid, hid.
+        Additional identifiers are attached to the front of the data.
+
+        TODO: check for conflicts!
+        """
+        data_path = self.options.get("data_path")
+        identifiers = ("enumid", "tid", "vid", "interview_wzb.ind.id")
+        enumid, tid, vid, hid = [self.options.get(idx, "unknown")
+                                 for idx in identifiers]
+
+        fname = "survey2_{}_{}_{}_{}.csv".format(enumid, tid, vid, hid)
         answer_path = os.path.join(data_path, fname)
 
-        label_answers = [(q.options.get("label"),
-                          q.answer_var.get()) for q in self.qobjects]
+        label_answers = self.get_answers()
 
         idx_labels = ["tid", "vid", "enumid",
                       "wzb.hh.id", "interview_wzb.ind.id"]
@@ -472,15 +495,15 @@ class Questionnaire(tk.Frame):
             d.writerow(labels)
             d.writerow(answers)
 
+        print "data written to {}".format(answer_path)
         return None
 
     def complete_questionnaire(self):
-        #go_next = self.options.get("next_function")
-        self.save_answers()
+        """Saves data one final time then calls next function"""
+        self.save()
         self.pack_forget()
         go_next()
-
-        print "Questionnaire completed"
+        print "Questionnaire completed."
         return None
 
 
@@ -490,25 +513,28 @@ def dummy_next():
     return None
 
 def test_run():
-    reload(answers)
-    reload(question)
+    #reload(answers)
+    #reload(question)
+    #import pkg.survey_round_2.details.cognition as cognition
     #reload(input_classes)
 
+    stimuli_tabs = [(cognition.Raven, "cognition task 1"),
+                    (cognition.Stroop, "cognition task 2")]
+
     test_dict = {"title": "Trial",
-                 "csv_path": "/Users/aserwaahWZB/Projects/GUI Code/fooling around/definitions_test",
+                 "csv_path": ("/Users/aserwaahWZB/Projects/"
+                              "GUI Code/fooling around/definitions_test"),
+                 "stimuli": stimuli_tabs,
                  "data_path": "test_data",
                  "next_function": dummy_next,
                  "members_list": ["Pauline", "Ruta", "Nora"]}
-
 
     root = tk.Tk()
     root.attributes("-fullscreen", True)
     tls = Questionnaire(root, **test_dict)
 
-    print("done making questionnaire")
+    print "done making questionnaire"
     return tls
-
-
 
 #sai = test_run()
 

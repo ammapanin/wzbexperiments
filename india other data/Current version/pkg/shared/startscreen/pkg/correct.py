@@ -23,7 +23,7 @@ class CorrectInfo(tk.LabelFrame):
 
     def get_hh_info(self, hh_name):
         field_ids = ("ration_nr", "election_id")
-        hh = self.households.get(hh_name)
+        hh = self.households.get(hh_name.strip())
         ids = [hh.get(i) for i in field_ids]
         return [hh_name] + ids
 

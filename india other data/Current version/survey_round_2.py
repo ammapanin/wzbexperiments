@@ -3,11 +3,10 @@ from pkg.create_questionnaire import run_survey
 import pkg.survey_round_2.details.cognition as cognition
 
 india_path = os.path.dirname(os.path.abspath(__file__))
-survey_path = os.path.join(india_path, "pkg", "survey_round_2", "details")
+survey_path = os.path.join(india_path, "pkg", "survey_round_2")
 data_path = os.path.join(survey_path, "data")
 comments_path = os.path.join(india_path, "comments")
-csv_path = os.path.join(survey_path,
-                        "definitions")
+csv_path = os.path.join(survey_path, "details", "definitions")
 
 title = "India Low Carbon Project - Questionnaire Round 2"
 
@@ -20,7 +19,8 @@ qdic = {"title": title,
         "data_path": data_path,
         "next_function": "comments"}
 
-debug = "DEBUG"
+#debug = "DEBUG"
+debug = False
 
 survey = run_survey(mode = debug,
                     qoptions = qdic)
