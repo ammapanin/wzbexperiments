@@ -53,14 +53,18 @@ class CognitionTab(tk.Frame):
 
         self.practice = task(self.practice_frame, "practice", self.base)
         self.real = task(self.main_frame, "real", self.base)
-        self.practice.pack()
+        self.practice.pack(side = "left")
+        self.next_bt = tk.Button(self, text = "NEXT", 
+                                 command = self.practice.go_next)
+        self.next_bt.pack(side = "right")
 
     def start_real(self):
         self.practice_lab.config(text = "This is the real round",
                                  bg = "lawn green")
         self.practice.pack_forget()
-        self.real.pack()
+        self.real.pack(side = "left")
         self.begin_bt.pack_forget()
+        self.next_bt.config(command = self.real.go_next)
 
     def get_answers(self):
         return self.real.get_answers()
@@ -75,9 +79,6 @@ class Task:
         self.qidx = tk.IntVar()
         self.qidx.set(0)
         self.start = tk.DoubleVar()
-        self.click_id = self.bind_class(self.name + "cognition_click",
-                                        "<Button-1>",
-                                        self.make_binding, "+")
 
     def make_binding(self, event):
         self.enter_id = self.bind_all("<Return>", self.go_next)
@@ -136,7 +137,7 @@ class StroopTask(Task, tk.Frame):
             self.clock("start")
         except StopIteration:
             self.num_var.set("Task complete")
-            self.unbind("<Return>", self.enter_id)
+            #self.unbind("<Return>", self.enter_id)
             self.answer.pack_forget()
 
     def go_next(self, event = ""):
@@ -196,7 +197,9 @@ class RavenTask(Task, tk.Frame):
 
     def make_choice(self, qidx, fname_image, correct):
         small_stimuli_img = tk.PhotoImage(file = fname_image)
-        stimuli_img = small_stimuli_img.zoom(2, 2)
+        med_stimuli_img = small_stimuli_img.zoom(3, 3)
+        #med_stimuli_img = small_stimuli_img.subsample(3, 3)
+        stimuli_img = med_stimuli_img.subsample(2, 2)
         values = range(1, 7)
         self.stimuli = stimuli = tk.Label(self, image = stimuli_img,
                                 name = "q" + str(qidx) + "stimuli")
@@ -259,7 +262,7 @@ class RavenTask(Task, tk.Frame):
                 stimuli, response = self.qobjects.get(qid_0).get("widgets")
                 [i.pack_forget() for i in (stimuli, response)]
                 endfont = tkFont.Font(size = 15, weight = "bold")
-                self.unbind("<Return>", self.enter_id)
+                #self.unbind("<Return>", self.enter_id)
                 end = tk.Label(self, text = "Task complete", font = endfont)
                 end.pack(side = "top")
         elif var_0 == 0:

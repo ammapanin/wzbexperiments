@@ -30,7 +30,7 @@ from budget_payment import BudgetPayment
 
 
 ### Program version ####
-version = "2.4"
+version = "2.5"
 
 # version 1.0: Oriinal version sent out beginning of April 2015
 # version 1.2: added 2 makali hh, ensured version saved
@@ -40,7 +40,7 @@ version = "2.4"
 # version 2.2: added Keeranigere, Belkere
 # version 2.3: added Keeranigere properly
 # version 2.4: added Mogenahalli properly
-
+# version 2.5: another attempt with Keeranigere; fixed inconsistencies
 textfilename = os.path.join(budgetpath, "budget_texts.txt")
 
 with open(textfilename, "r") as textfile:

@@ -277,11 +277,6 @@ class Dropdowns(tk.LabelFrame):
 
         return households
 
-
-
-
-
-
     def get_members(self):
         members_path = os.path.join(self.data_path,
                                "members.csv")
@@ -333,7 +328,7 @@ class Dropdowns(tk.LabelFrame):
                 try:
                     m_idx = int(member_name[2])
                     gender = member_name[3]
-                    general_relation = member_relations[m_idx]
+                    general_relation = member_relations.get(m_idx, {"1": "Other"})
                     default = general_relation.get("1")
                     relationship = general_relation.get(gender, default)
                 except ValueError:

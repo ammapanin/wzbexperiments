@@ -252,10 +252,10 @@ class Input(tk.Frame):
 class TextBox(Input):
     def __init__(self, master, **kwargs):
         Input.__init__(self, master, **kwargs)
-
+        self.wlength = 28
         answer = self.text = tk.Text(self, bg = "snow3",
                                      height = 10,
-                                     width = 25,
+                                     width = self.wlength - 3,
                                      wrap = "word")
         answer.grid(sticky = "w", row = 0, column = 0)
 
@@ -270,7 +270,6 @@ class DynamicText(TextBox):
     def __init__(self, master, **kwargs):
         TextBox.__init__(self, master, **kwargs)
         self.options = kwargs
-
         update = tk.Button(self,
                            text = "update table",
                            command = self.update_table)
@@ -294,7 +293,7 @@ class Slider(Input, object):
     def __init__(self, master, **kwargs):
         Input.__init__(self, master, **kwargs)
         #super(Slider, self).__init__(self, master, **kwargs)
-
+        self.wlength = 230
         self.units = kwargs.get("units").split(",x")
         if self.units != [""]:
             option_lists = [l.split(",x") for l in self.options]
@@ -304,7 +303,6 @@ class Slider(Input, object):
             self.make_units(default_unit)
         elif self.units == [""]:
             default_options = ",z".join(self.options)
-
         self.make_slider(default_options)
 
     def update_slider(self, name, index, mode):
@@ -328,6 +326,9 @@ class Slider(Input, object):
                       ((self, self.units_var) + tuple(self.units)))
         units.grid(row = 0, column = 0)
         self.units_var.trace("w", self.update_slider)
+
+    def focus_scale(self, event):
+        self.scale.focus_set()
 
     def make_slider(self, slider_options):
         options = slider_options.split(",z")
@@ -353,6 +354,7 @@ class Slider(Input, object):
                                       orient = "horizontal",
                                       variable = self.answer_var)
 
+        scale.bind("<Button-1>", self.focus_scale)
         lab_cols = zip(labs, (0, 2))
         scale.grid(row = 0, column = 1)
         [l.grid(row = 0, column = i, sticky = "sw", padx = 3)
@@ -376,7 +378,7 @@ class Slider(Input, object):
 class Dropdown(Input):
     def __init__(self, master, **kwargs):
         Input.__init__(self, master, **kwargs)
-
+        
         self.default_answer = "No selection made"
         self.answer_var.set(self.default_answer)
 
@@ -385,6 +387,7 @@ class Dropdown(Input):
 
         dropdown = apply(tk.OptionMenu, drop_options)
         dropdown.grid(sticky = "w", row = 0, column = 0)
+        self.wlength = 50
 
     def been_answered(self):
         answer = self.answer_var.get()
@@ -394,10 +397,9 @@ class Check(Input):
     def __init__(self, master, **kwargs):
         Input.__init__(self, master, **kwargs)
         self.make_buttons()
-
         if self.num_list == True:
             self.coordinate_check_numbers()
-
+        self.wlength = max([len(opt) for opt in self.options]) + 3
     def make_buttons(self):
         #self.check_vars = [tk.StringVar(self) for txt in self.options]
         [v.set(0) for v in self.check_vars]
@@ -435,7 +437,7 @@ class Check(Input):
 class Choice(Input):
     def __init__(self, master, **kwargs):
         Input.__init__(self, master, **kwargs)
-
+        self.wlength = max([len(opt) for opt in self.options]) + 3
         bts = [tk.Radiobutton(self,
                               text = txt,
                               var = self.answer_var,
@@ -453,7 +455,7 @@ class Entry(Input):
                          textvariable = self.answer_var,
                          show = " ")
         entry.grid(sticky = "w", row = 0, column = 0)
-
+        self.wlength = 15 + 3
         self.ever_answered = 0
 
         def clear_entry(name, index, mode):

@@ -30,7 +30,8 @@ class Questionnaire(tk.Frame):
         self.qorder, self.lab_tab_dic, self.tabs = self.get_structure()
 
         title_frame, q_frame, bt_frame = [tk.Frame(self) for f in range(0, 3)]
-        canvas = tk.Canvas(q_frame, bg = "blue", highlightthickness = 0)
+        self.canvas = canvas = tk.Canvas(q_frame, 
+                                         bg = "blue", highlightthickness = 0)
 
         self.make_labels(title_frame)
 
@@ -78,6 +79,8 @@ class Questionnaire(tk.Frame):
         [l.config(bg = "white") for l in all_labs]
         active_lab = self.tab_labels.children.get(tab_name)
         active_lab.config(bg = "greenyellow")
+        self.update_idletasks()
+        self.canvas.config(scrollregion = self.canvas.bbox("all"))
         return None
 
     def make_tab_frames(self, title_master, q_master):
@@ -104,8 +107,8 @@ class Questionnaire(tk.Frame):
         tab_frame = self.make_tab_frames(title_frame, frame)
 
         canvas.pack(side = "left", fill = "both", expand = True)
-        vsb = tk.Scrollbar(q_frame,
-                           command = canvas.yview)
+        self.vsb = vsb = tk.Scrollbar(q_frame,
+                                      command = canvas.yview)
         vsb.pack(side = "right", fill = "y")
 
         canvas.configure(yscrollcommand = vsb.set)
@@ -313,6 +316,8 @@ class Questionnaire(tk.Frame):
         return questions
 
     def create_singles(self, qdics):
+        """"Creates list of dictionary {label: qdic} for all single questions.
+        """
         singles = dict([(q["label"], q)
                         for i, q in qdics if i == "single"])
         [q.update({"qlabel": q.get("label")})
@@ -331,7 +336,7 @@ class Questionnaire(tk.Frame):
                             "questions":list(),
                             "qview": "table",
                             "tab": self.tab_dic.get(qtabs.get(t).get("tab")),
-                            "question_text": qtabs.get(t).get("text"),
+                            "question_text":  qtabs.get(t).get("text") + " (Please remember to scroll right and down to complete all questions.)",
                             "conditions": []})
                        for t in tab_names])
         [tables[i]["questions"].append(q)
@@ -378,8 +383,7 @@ class Questionnaire(tk.Frame):
             except KeyError as e:
                 print "Problem with: ", qlab
                 print traceback.print_exc(e)
-
-        #questions = [responses.get(qlab) for qlab in qorders]
+               
         [dic.update({"current_lab_var" : self.current_lab,
                      "latest_lab_var": self.latest_lab,
                      "qidx": i})
@@ -507,16 +511,19 @@ class Questionnaire(tk.Frame):
         return None
 
 
-
 def dummy_next():
     print "Finished with the questionnaire test"
     return None
 
 def test_run():
-    #reload(answers)
+    reload(answers)
     #reload(question)
     #import pkg.survey_round_2.details.cognition as cognition
     #reload(input_classes)
+    cognition = imp.load_source("cognition", 
+                                ('/Users/aserwaahWZB/Projects/GUI Code/'
+                                 'india other data/Current version/pkg/'
+                                 'survey_round_2/details/cognition.py'))
 
     stimuli_tabs = [(cognition.Raven, "cognition task 1"),
                     (cognition.Stroop, "cognition task 2")]

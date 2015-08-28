@@ -1,0 +1,17 @@
+import Tkinter as tk
+
+
+class Table(tk.Frame):
+    def __init__(self, master):
+        canvas = tk.Canvas(self)
+        hscroll = tk.Scrollbar(self)
+        vscroll = tk.Scrollbar(self, orient = "horizontal")
+        
+        hscroll.config(command = canvas.xview)
+        vscroll.config(comand = canvas.yview)
+
+        hscroll.pack(side = "bottom", fill = "x")
+        vscroll.pack(side = "right", fill = "y")
+
+        canvas.config(xscrollcommand = hscroll.set, yscrollcommand = vscroll.set)
+        canvas.pack(side = "left", expand = True, fill = "both")

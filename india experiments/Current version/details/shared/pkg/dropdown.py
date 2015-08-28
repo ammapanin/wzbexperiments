@@ -101,7 +101,6 @@ class Dropdowns(tk.LabelFrame):
                               hh_var,
                               participation_trace)
 
-
     def create_participation(self, master, hh_idx):
         pframe = tk.Frame(master)
         pframe.pack(side = "top", anchor = "w")
