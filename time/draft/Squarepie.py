@@ -1,11 +1,14 @@
 import Tkinter as tk
 import tkFont
+import os
+import csv
+import itertools
 
 class SquarePie(tk.Canvas):
     def __init__(self, master, pie_configs):
         tk.Canvas.__init__(self, master)
-        self.config(bg = "pink", 
-                    highlightcolor = "purple",
+        self.config(bg = "ivory2", 
+                    highlightcolor = "green4",
                     highlightthickness = 5)
         self.pack(fill = "both", expand = True, anchor = "w")
 
@@ -13,7 +16,8 @@ class SquarePie(tk.Canvas):
         self.prospect_tag = pie_configs.get("prospect_id")
         self.prob = pie_configs.get("prob")
         self.amounts = ((0, 100), (20, 500))
-   
+        self.choice_pie = pie_configs.get("choice_pie")
+
         self.pie = self.draw_pie()
         self.prospect = self.draw_prospect()
         self.amount_ids = self.draw_amounts()
@@ -50,10 +54,17 @@ class SquarePie(tk.Canvas):
 
     def draw_amounts(self):
         amtfont = tkFont.Font(size = 25)
+        choicefont = tkFont.Font(size = 28)
         amounts = [self.create_text(0, 0, 
                                     text = amt, font = amtfont)
                    for stream in self.amounts
                    for amt in stream]
+        if self.choice_pie == True:
+            self.itemconfig(amounts[0], 
+                            font = choicefont, 
+                            fill  = "dark green",
+                            tags = ("choice",))
+            [self.itemconfig(s, font = amtfont) for s in amounts[1:]]
         self.choice_id  = amounts[0]
         self.risky_ids.extend(amounts[2:])
         return amounts
@@ -80,7 +91,6 @@ class SquarePie(tk.Canvas):
         self.update_prospect(xpivot, xstart, xend, xtimes_p,
                              mid, yline1, yline2)
 
-            
     def update_probability(self, prob):
         self.prob = prob
         pie, arc, ptext = [self.pie.get(tag) for tag in ("pie", "arc", "prob")]
@@ -152,14 +162,12 @@ class SquarePie(tk.Canvas):
         self.coords(l7, xt21, y2, xt22, y2)
         self.coords(l8, xt22, y2, xend, y2)
 
-        #ids = [i for i in self.risky_ids if self.itemcget(i, "state") == "hidden"] 
         [self.itemconfig(i, state = "normal") for i in self.risky_ids]
         return None
 
     def update_amounts(self, amounts):
         state_dic = {True: "hidden", False: "normal"}
         states = [state_dic.get(a == "na") for a in amounts]
-        print amounts,states
         [self.itemconfig(i, text = amt, state = s) 
          for i, amt, s in zip(self.amount_ids, amounts, states)]
 
@@ -196,7 +204,7 @@ class PieScreen(tk.Canvas):
 
     def __init__(self, master):
         tk.Canvas.__init__(self, master)
-        self.config()
+        self.config(highlightthickness = 0)
         self.pack(fill = "both", expand = True)
 
         self.pies, self.pie_windows = self.add_pies()
@@ -233,13 +241,13 @@ class PieScreen(tk.Canvas):
         svar_new = abs(svar - 1)
         self.selected.set(svar_new)
         self.pies[svar_new].focus_set()
-        print self.selected.get()
         return None
 
     def add_pies(self):
         pie_configs = [{"colour": "red",
                         "prob": 0.5,
-                        "prospect_id" : 0},
+                        "prospect_id" : 0,
+                        "choice_pie": True},
                        {"colour": "blue",
                         "prob": 0.8,
                         "prospect_id" : 1}]
@@ -352,33 +360,58 @@ class PieScreen(tk.Canvas):
                              xend, xtimes, mtimes, bar_height)        
 
 class ChoiceScreen(tk.Frame):
-    def __init__(self, master):
+    def __init__(self, master, stimuli):
         tk.Frame.__init__(self, master)
         self.pack(side = "top", fill = "both", expand = True)
-        self.pie_frame, self.bt_frame = self.make_frames()
+        self.pie_frame, btframes, self.title, self.edit = self.make_frames()
+        self.bt_frame, confirm_frame = btframes
         self.pie = PieScreen(self.pie_frame)
         self.buttons = dict()
         self.choice = 0
         self.bind_all("<Return>", self.make_selection)
-
+        self.stimuli, self.nquestions = stimuli
+        self.confirm_bt = self.confirm_button(confirm_frame)
+        self.start_question()
+        
     def make_frames(self):
-        f1, f2 = [tk.Frame(self) for i in range(0, 2)]
+        title_frame, body = [tk.Frame(self) for i in range(0, 2)]
+        f1, f2 = [tk.Frame(body) for i in range(0, 2)]
+        title_frame.pack(side = "top", fill = "x")
+        body.pack(side = "top", fill = "both", expand = True)
         f1.pack(side = "left",
                 fill = "both", 
                 expand = True) 
         f2.pack(side = "left",
                 fill = "both")
-        return f1, f2
+        f2.config(highlightthickness = 3)
+
+        b1, b2 = [tk.Frame(f2) for i in (0, 1)]
+        b1.pack(side = "top", fill = "both", expand = True)
+        b2.pack(side = "top", fill = "y")
+        
+        title, edit_text = [tk.Label(title_frame,
+                                     text = "") for i in (0, 1)]
+        edit_text.config(text = "Please confirm your choices")
+        title.pack(side = "left")
+        return f1, (b1, b2), title, edit_text
 
     def update_question(self, stimuli):
-        qidx, stimuli = stimuli
+        qidx, stimuli = stimuli 
         choice_range = range(0, int(stimuli.get("x22")) + 20, 20)
+        self.title.config(text = "Question {} of {}".format(qidx, self.nquestions))
+        self.edit.pack_forget()
+        self.pie.focus_set()
         self.choice_range = iter(choice_range)
+        self.choice = self.choice_range.next()
         bts = self.new_buttons(choice_range)
         self.buttons[qidx] = bts
         self.current_bts = bts
         self.pie.update_question(stimuli)
 
+    def confirm_button(self, frame):
+        bt = tk.Button(frame, text = "Confirm", command = self.start_question)
+        return bt
+    
     def new_buttons(self, stimuli):
         btframe = self.bt_frame.children.get("buttons")
         if btframe != None:
@@ -389,7 +422,7 @@ class ChoiceScreen(tk.Frame):
     def draw_buttons(self, choices):
         btframe = tk.Frame(self.bt_frame, name = "buttons")
         labs = [tk.Label(btframe, text = txt) for txt in ("Rot", "Blau")] 
-        lab_grids = zip(labs, ((0, 0), (0, 1)))
+        lab_grids = zip(labs, ((0, 1), (0, 2)))
         [lab.grid(row = i, column = j) for lab, (i, j) in lab_grids]
         btframe.pack(side = "left", fill = "both", expand = True)
         
@@ -398,7 +431,8 @@ class ChoiceScreen(tk.Frame):
         btinfo = zip(choices, btvars)
         
         choice_labs = [tk.Label(btframe, text = c) for c in choices]
-        [c.grid(row = i, column = 0) for i, c in enumerate(choice_labs, 1)]
+        [c.grid(row = i, column = 0, sticky = "w")
+         for i, c in enumerate(choice_labs, 1)]
 
         def grid_xy(n):
             i = 0
@@ -412,7 +446,7 @@ class ChoiceScreen(tk.Frame):
                 i += 1
 
         grids = grid_xy(n * 2)
-        bts = {n : {"bts": [tk.Radiobutton(btframe, text = n,
+        bts = {n : {"bts": [tk.Radiobutton(btframe, 
                                            value = i, variable = v) 
                             for i in (0, 1)],
                     "var": v}
@@ -427,30 +461,46 @@ class ChoiceScreen(tk.Frame):
         choice = self.pie.selected.get()
         bts = self.current_bts.get(self.choice)
         bts.get("var").set(choice)
-        self.choice = self.choice_range.next()
-        y.pie.pies[0].update_choice(self.choice)
+        try:
+            self.choice = self.choice_range.next()
+            y.pie.pies[0].update_choice(self.choice)
+        except StopIteration:
+            self.end_question()
+        return None
+        
+    def end_question(self):
+        self.edit.pack(side = "left")
+        self.bt_frame.focus_set()
+        self.confirm_bt.pack()
+        
+    def start_question(self):
+        self.confirm_bt.pack_forget()
+        try:
+            self.update_question(self.stimuli.next())
+        except StopIteration:
+            print "Experiment over"
+
 
 spath = '/Users/aserwaahWZB/Projects/GUI Code/time/draft'
-csvpath = os.path.join(spath, "stimuli_test.csv")
+csvpath = os.path.join(os.getcwd(), "stimuli_test.csv")
 
 def get_stimuli(path):
     stimulipath = path
     with open(stimulipath, "rb") as sfile:
         scsv = csv.reader(sfile)
         fnames = scsv.next()
-        lines = enumerate([dict(zip(fnames, line)) for line in scsv])
-    return lines
+        ldic = [dict(zip(fnames, line)) for line in scsv]
+        lines = enumerate(ldic)
+    return lines, len(ldic)
 
 ss = get_stimuli(csvpath)
-b= (s for s in ss)
 
 def test_class():
     root = tk.Tk()
-    abrogate = ChoiceScreen(root)
+    abrogate = ChoiceScreen(root, ss)
     return abrogate
 
 y = test_class()
-y.update_question(b.next())
 
 y.pie.pies[0].itemconfig(y.pie.pies[0].amount_ids[0], state = "normal")
 
