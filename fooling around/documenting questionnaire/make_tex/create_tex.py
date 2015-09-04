@@ -39,6 +39,7 @@ def create_question(qdic):
     label = escape_label(qdic.get("label"))
     qtex = "{{\\bfseries {}}}\\emph{{ {} }} \n"
     question = qtex.format(qtext, label)
+    print label
     tex_options = unpack_options(qtype, options, qunits)
     if notes != "":
         nb = "\\textbf{{{{\\footnotesize NOTE}} {} }} \n"
@@ -67,7 +68,10 @@ def itemize(options_list, table = False):
     return tex_list
 
 def unpack_slider(options, sep):
-    smin, smax, sfreq = options.split(sep)[0:3]
+    try:
+        smin, smax, sfreq = options.split(sep)[0:3]
+    except:
+        print options, sep
     tex_base = "\\\\min - {}, max - {}, interval - {} \n"
     tex = tex_base.format(smin, smax, sfreq)
     return tex
@@ -104,3 +108,4 @@ def make_questions(csv_path):
 def write_test(stuff):
     with open("test.tex", "w") as f:
         f.write(stuff)
+

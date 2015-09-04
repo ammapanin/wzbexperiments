@@ -52,4 +52,5 @@ def make_doc(title, csv_folder, output_folder):
 
 
 
+qpath = "/Users/aserwaahWZB/Projects/GUI\ Code/india\ other\ data/Current\ version/pkg/survey_round_2/details/definitions"
 

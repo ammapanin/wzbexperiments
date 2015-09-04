@@ -389,27 +389,41 @@ class ChoiceScreen(tk.Frame):
         b1.pack(side = "top", fill = "both", expand = True)
         b2.pack(side = "top", fill = "y")
         
+        titlefont = tkFont.Font(size = 25, weight = "bold")
+        editfont = tkFont.Font(size = 28, weight = "bold")
         title, edit_text = [tk.Label(title_frame,
                                      text = "") for i in (0, 1)]
-        edit_text.config(text = "Please confirm your choices")
+        edit_text.config(text = "Please confirm your choices", 
+                         fg = "dark green", font = editfont)
+        title.config(font = titlefont)
         title.pack(side = "left")
         return f1, (b1, b2), title, edit_text
 
     def update_question(self, stimuli):
         qidx, stimuli = stimuli 
         choice_range = range(0, int(stimuli.get("x22")) + 20, 20)
-        self.title.config(text = "Question {} of {}".format(qidx, self.nquestions))
+        self.title.config(text = "Question {} of {}".format(qidx, 
+                                                            self.nquestions))
         self.edit.pack_forget()
         self.pie.focus_set()
         self.choice_range = iter(choice_range)
-        self.choice = self.choice_range.next()
+        #self.choice = self.choice_range.next()
         bts = self.new_buttons(choice_range)
         self.buttons[qidx] = bts
         self.current_bts = bts
         self.pie.update_question(stimuli)
+        self.steps = choice_range
+        mmin, mmax = (min(choice_range), max(choice_range))
+        self.checked = [mmin, mmax]
+        [self.current_bts.get(amt).get("var").set(i)
+         for amt, i in zip((mmin, mmax), (1, 0))]
+        self.c0 = 40
+        self.pie.pies[0].update_choice(self.c0)
+        
 
     def confirm_button(self, frame):
-        bt = tk.Button(frame, text = "Confirm", command = self.start_question)
+        bt = tk.Button(frame, text = "Confirm", 
+                       command = self.start_question)
         return bt
     
     def new_buttons(self, stimuli):
@@ -428,6 +442,7 @@ class ChoiceScreen(tk.Frame):
         
         n = len(choices)
         btvars = [tk.IntVar(self) for i in choices]
+        [b.set(600) for b in btvars]
         btinfo = zip(choices, btvars)
         
         choice_labs = [tk.Label(btframe, text = c) for c in choices]
@@ -457,19 +472,21 @@ class ChoiceScreen(tk.Frame):
         [b.grid(**xy) for b, xy in bts_grid]                                  
         return bts
 
+    def update_choice(self, choice):
+        self.c0 = choice
+        self.pie.pies[0].update_choice(choice)
+
     def make_selection(self, event):
         choice = self.pie.selected.get()
-        bts = self.current_bts.get(self.choice)
-        bts.get("var").set(choice)
-        try:
-            self.choice = self.choice_range.next()
-            y.pie.pies[0].update_choice(self.choice)
-        except StopIteration:
+        cnext = self.pingpong(choice)
+        if cnext != False:
+            self.update_choice(cnext)
+        else:
             self.end_question()
         return None
         
     def end_question(self):
-        self.edit.pack(side = "left")
+        self.edit.pack(side = "right")
         self.bt_frame.focus_set()
         self.confirm_bt.pack()
         
@@ -479,6 +496,56 @@ class ChoiceScreen(tk.Frame):
             self.update_question(self.stimuli.next())
         except StopIteration:
             print "Experiment over"
+
+    def pingpong(self, choice):
+        cdic = {1: (min(self.checked), self.c0),
+                0: (self.c0, max(self.checked))} 
+        min_c, max_c = cdic.get(choice)
+        go_next = self.fill(min_c, max_c, choice)
+        
+        if go_next == True:
+            cnext = self.get_next()
+            self.c0 = cnext
+            print "cnext", cnext
+        elif go_next == False:
+            cnext = False
+        return cnext
+
+    def fill(self, mmin, mmax, choice):
+        print mmin, mmax
+        fill_check = range(mmin, mmax + 20, 20)
+        bts = [self.current_bts.get(c) for c in fill_check]
+        [bt.get("var").set(choice) for bt in bts]
+        print fill_check
+        self.checked.extend(fill_check)
+        checked_set = set(self.checked)
+        self.checked = list(checked_set)
+        return len(checked_set) != len(self.steps)
+
+    def get_next(self):
+        cmin = max([i for i, c in enumerate(self.steps) 
+                    if (c in self.checked and c < self.c0)])
+        cmax = min([i for i, c in enumerate(self.steps) 
+                    if (c in self.checked and c > self.c0)])
+        print "idx", cmin, cmax
+
+        irange = range(cmin, cmax)        
+        idiff = float(cmax - cmin) / 2
+
+        if len(irange) == 3:
+            iplus = int(idiff)
+        else:
+            iplus = int(round(idiff))
+        idx = cmin + iplus
+        print cmin, iplus
+        amt = self.steps[idx]
+        
+        return amt
+
+    def end_pingpong(self):
+        print "End"
+
+
 
 
 spath = '/Users/aserwaahWZB/Projects/GUI Code/time/draft'
