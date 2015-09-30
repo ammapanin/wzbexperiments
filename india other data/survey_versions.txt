@@ -2,3 +2,6 @@
 26/06/2015 - Updated trial version sent to enumerators
 01/07/2015 - Version after discussion with Sai + Nando 
 09/07/2015 - Akkuru test version sent from Warwick
+***
+07/09/2015 - Shortened version prepared; time added for rationlity questions
+12/09/2015 - Added the REDO file, which includes the Stroop task with time and the new income questions

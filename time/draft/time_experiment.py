@@ -6,15 +6,19 @@ import csv
 from Squarepie import ChoiceScreen
 
 class TimeExperiment(tk.Frame):
-    def __init__(self, master, stimuli_path):
+    def __init__(self, master, stimuli_path, debug):
         tk.Frame.__init__(self, master)
         self.pack(side = "top", fill = "both", expand = True)
 
         self.stimuli_path = stimuli_path
-        #self.deskvar = tk.IntVar()
-        #self.deskvar.set("")
-        #self.make_frames()
-        self.start_experiment("practice", end_func = False)
+        if debug == True:
+            self.start_experiment("practice", end_func = False)
+        else:
+            self.deskvar = tk.IntVar()
+            self.deskvar.set("")
+            self.make_frames()
+
+
     def make_frames(self):
         title = tk.Label(self, text = ("Please enter your desk number, "
                                 "then press 'Enter' to continue"))
@@ -70,12 +74,12 @@ class TimeExperiment(tk.Frame):
             lines = enumerate(ldic, 1)
         return lines, len(ldic)
 
-def run_experiment(stimuli_path):
+def run_experiment(stimuli_path, debug):
     root = tk.Tk()
-    x = TimeExperiment(root, stimuli_path)
+    x = TimeExperiment(root, stimuli_path, debug)
     return x
 
 
 stimuli_path = csvpath = os.path.join(os.getcwd(), "stimuli")
 
-x = run_experiment(stimuli_path)
+x = run_experiment(stimuli_path, debug = False)

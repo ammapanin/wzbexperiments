@@ -54,7 +54,7 @@ class CognitionTab(tk.Frame):
         self.practice = task(self.practice_frame, "practice", self.base)
         self.real = task(self.main_frame, "real", self.base)
         self.practice.pack(side = "left")
-        self.next_bt = tk.Button(self, text = "NEXT", 
+        self.next_bt = tk.Button(self, text = "NEXT",
                                  command = self.practice.go_next)
         self.next_bt.pack(side = "right")
 
@@ -92,10 +92,13 @@ class Task:
             return t - start
 
     def get_answers(self):
-        answer_tuples = [(self.task_name + "_{}".format(qid + 1),
+        answer_tuples = [(self.task_name + "_a{}".format(qid + 1),
                           a.get("answer"))
                          for qid, a in self.answer_dic.items()]
-        return answer_tuples
+        time_tuples = [(self.task_name + "_t{}".format(qid + 1),
+                        a.get("time"))
+                       for qid, a in self.answer_dic.items()]
+        return answer_tuples + time_tuples
 
 class StroopTask(Task, tk.Frame):
     extra_info = ("In this task you must state "
