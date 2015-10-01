@@ -4,7 +4,7 @@ import tkMessageBox
 import os
 import csv
 
-from Squarepie import ChoiceScreen
+from program_files.Squarepie import ChoiceScreen
 
 class TimeExperiment(tk.Frame):
     def __init__(self, master, stimuli_path, debug):
@@ -93,9 +93,12 @@ class TimeExperiment(tk.Frame):
 
 def run_experiment(stimuli_path, debug):
     root = tk.Tk()
+    root.attributes("-fullscreen", True)
+    root.title("Risk and time experiment")
     x = TimeExperiment(root, stimuli_path, debug)
+    root.mainloop()
     return x
 
 
-stimuli_path = csvpath = os.path.join(os.getcwd(), "stimuli")
+stimuli_path = csvpath = os.path.join(os.getcwd(), "program_files", "stimuli")
 x = run_experiment(stimuli_path, debug = False)
