@@ -4,7 +4,6 @@
 ### Standardised log-in page for enumerator data collection in India
 ### Last updated: 7.11.16 , beginning work for the time preference tasks
 
-# And now changing again
 import Tkinter as tk
 import os
 import tkFont
