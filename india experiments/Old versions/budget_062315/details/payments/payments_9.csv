@@ -1,6 +1,0 @@
-tid,vid,enumid,wzb.hh.id,interview_wzb.ind.id,time,date,interview_name,head_name,head_name_corrected,election_id,head_election_corrected,ration_nr,head_ration_corrected,interview_other_election,interviewed_other_ration,pay_treatment,payment_1,payment_2,paydate_1,paydate2
-2,9,0,209019,209019x1,08:11,10/06/15,SHIVAPPA BL (HEAD),BL SHIVAPPA S/O LATE LINGEGOWDA,,,,,,,,time,110.0,336,11/09/15,11/12/15
-2,9,0,209012,209012x1,08:20,10/06/15,BADRAMMA  (HEAD),BADRAMMA W/O LATE KADANNA,,,,,,,,time,76,403.0,11/09/15,11/12/15
-2,9,0,209020,209020x1,09:08,10/06/15,BHADRAMMA  (HEAD),BHADRAMMA W/O LATE MALLEGOWDA,,,,,,,,risk,60,NA,11/06/15,NA
-2,9,0,209015,209015x1,10:02,10/06/15,BASAVRAJU  (HEAD),BASAVRAJU S/O SIDDEGOWDA,,,,,,,,time,52,259.0,11/06/15,11/09/15
-2,9,6,209143,209143x1,14:33,10/06/15,CHANNAVEEREGOWDA  (HEAD),CHANNAVEEREGOWDA S/O VEERABHADREGOWDA,,,,,,,,time,68,594,11/06/15,11/09/15
