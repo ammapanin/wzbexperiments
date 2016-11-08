@@ -1,3 +1,4 @@
-c11,x12,y12,p1,c21,c22,x22,y22,p2,t1,t2,step,block
-,na,na,1,na,na,500,0,0.1,0,0,2,weighting
-,na,na,1,na,na,500,na,1,0,3,1,discount
+elicit;c11;x12;c12;y12;p1;c21;x22;c22;y22;p2;t11;t12;t21;t22;block;qidx
+prob;20;na;0;na;0.78;na;20;na;na;1;0;0;12;12;MP;100
+prob;20;na;0;na;0.78;na;20;na;na;1;0;0;0.5;0.5;MP;101
+amt;;10;na;na;1;10;30;na;na;1;0;6;0;6;intertemporal;102

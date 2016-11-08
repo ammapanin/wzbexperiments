@@ -1,7 +1,0 @@
-
-
-def grid_xy(n):
-    i = 0
-    while i < n:
-        yield i
-        i += 1

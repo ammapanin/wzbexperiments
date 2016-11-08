@@ -1,6 +1,0 @@
-question_text,qview,type,num_list,label,tab,options,units,notes,nconditions,c1_logic,c1_type,c1_values,c1_labels,c1_texts,c1_rows,cond_2,cond_2_type,cond_2_values,cond_2_labels,cond_2_texts
-What is your household income from agriculture per month?,single,slider,0,income_agric,income,"100,z100000,z100,x1,z30,z0.25","Rupees,xLakhs",,0,,,,,,,,,,,
-What is your household income from horticulture per month?,single,slider,0,income_horticulture,income,"100,z100000,z100,x1,z30,z0.25","Rupees,xLakhs",,0,,,,,,,,,,,
-What is your household income from animal husbandry per month?,single,slider,0,income_husbandry,income,"100,z100000,z100,x1,z30,z0.25","Rupees,xLakhs",,0,,,,,,,,,,,
-What is your household income from agricultural labour month?,single,slider,0,income_agric_labour,income,"100,z100000,z100,x1,z30,z0.25","Rupees,xLakhs",,0,,,,,,,,,,,
-What is your household income from non-agricultural labour per month?,single,slider,0,income_other_labour,income,"100,z100000,z100,x1,z30,z0.25","Rupees,xLakhs",,0,,,,,,,,,,,

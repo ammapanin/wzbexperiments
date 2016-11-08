@@ -1,0 +1,4 @@
+c11,c12,x12,y12,p1,c21,c22,x22,y22,p2,t1,t2,step,block
+,na,na,na,1,200,200,100,0,0.6,0,6,3,risky_intertemporal 
+,na,na,na,1,na,na,500,0,0.1,0,0,2,weighting
+,na,na,na,1,na,na,500,na,1,0,3,1,discount

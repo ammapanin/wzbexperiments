@@ -1,0 +1,19 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+
+import Tkinter as tk
+
+class Training(tk.Frame):
+    def __init__(self):
+        tk.Frame.__init__(self, master)
+
+
+    def draw_frames(self):
+
+
+
+    def create_tea_example(self):
+
+
+    def create_money_example(self)
