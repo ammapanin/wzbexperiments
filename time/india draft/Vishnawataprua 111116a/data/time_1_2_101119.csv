@@ -1,0 +1,12 @@
+wzb.hh.id,wzb.ind.id,vid,tid,enumerator,qorder,cl_idx,elicit,start_amt,min_choice_p0,max_choice_p1,min_choice_0,max_choice_1
+101119,101119x1,1,1,Bhushan,1,6,prob,50,60,55,60,55
+101119,101119x1,1,1,Bhushan,2,4,amt,1000,1000,55,1000,NA
+101119,101119x1,1,1,Bhushan,3,2,amt,1800,1800,1700,1800,1700
+101119,101119x1,1,1,Bhushan,1,5,prob,70,65,60,65,60
+101119,101119x1,1,1,Bhushan,2,2,amt,240,240,220,240,220
+wzb.hh.id,wzb.ind.id,vid,tid,enumerator,qorder,cl_idx,elicit,start_amt,min_choice_p0,max_choice_p1,min_choice_0,max_choice_1
+101119,101119x3,1,1,Bhushan,1,2,amt,1900,1800,1700,1800,1700
+101119,101119x3,1,1,Bhushan,2,6,prob,35,35,30,35,30
+101119,101119x3,1,1,Bhushan,3,4,amt,1800,1900,1800,1900,1800
+101119,101119x3,1,1,Bhushan,1,2,amt,260,260,240,260,240
+101119,101119x3,1,1,Bhushan,2,5,prob,0,0,240,0,NA

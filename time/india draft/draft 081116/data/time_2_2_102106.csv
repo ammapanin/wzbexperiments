@@ -1,0 +1,6 @@
+wzb.hh.id,wzb.ind.id,vid,tid,enumerator,qorder,cl_idx,elicit,start_amt,min_choice_p0,max_choice_p1,min_choice_0,max_choice_1
+102106,102106x1,2,1,Bhushan,1,10,prob,75,65,60,65,60
+102106,102106x1,2,1,Bhushan,2,2,amt,500,520,500,520,500
+102106,102106x1,2,1,Bhushan,1,4,amt,1900,1900,1800,1900,1800
+102106,102106x1,2,1,Bhushan,2,6,prob,65,75,70,75,70
+102106,102106x1,2,1,Bhushan,3,2,amt,2800,2800,2700,2800,2700

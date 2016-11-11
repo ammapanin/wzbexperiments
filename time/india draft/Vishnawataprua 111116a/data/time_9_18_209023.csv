@@ -1,0 +1,6 @@
+wzb.hh.id,wzb.ind.id,vid,tid,enumerator,qorder,cl_idx,elicit,start_amt,min_choice_p0,max_choice_p1,min_choice_0,max_choice_1
+209023,209023x1,9,2,Arun,1,4,amt,1100,1600,1500,1600,1500
+209023,209023x1,9,2,Arun,2,6,prob,5,5,0,5,0
+209023,209023x1,9,2,Arun,3,2,amt,1900,1800,1700,1800,1700
+209023,209023x1,9,2,Arun,1,5,prob,95,100,95,100,95
+209023,209023x1,9,2,Arun,2,2,amt,380,400,380,400,380

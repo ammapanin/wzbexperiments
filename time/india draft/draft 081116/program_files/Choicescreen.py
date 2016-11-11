@@ -4,7 +4,7 @@
 ### Code to produce the screen used in risk and time experiments
 ### Experiments run in Berlin (March 2016) and Bangalore (Nov 2016)
 ###
-### Last updated: 3.11.16
+### Last updated: 11.11.16
 
 import Tkinter as tk
 import tkFont
@@ -23,7 +23,7 @@ class ChoiceScreen(tk.Frame):
     def __init__(self, master, stimuli, mode, end_func, idvars,
                  prob_type, commodity):
         tk.Frame.__init__(self, master)
-
+        self.order = 0
         self.main = master
         self.mode = mode
         self.commodity = commodity
@@ -35,14 +35,11 @@ class ChoiceScreen(tk.Frame):
         self.c0 = tk.IntVar(self)
         self.c_1 = tk.IntVar(self)
 
-        print "id variables"
-        print idvars
         self.idvars = idvars
         self.stimuli_step = 10
         self.prob_type = prob_type
         self.stimuli_init = stimuli
         self.commodity = commodity
-
 
     def start(self):
         self.pack(side = "top", fill = "both", expand = True)
@@ -159,7 +156,8 @@ class ChoiceScreen(tk.Frame):
         btframe.pack(side = "left", fill = "both", expand = True)
         tracker_configs = {"elicit": self.pie.elicit,
                            "minmax": (self.mmax, self.mmin),
-                           "stimuli_step": self.stimuli_step}
+                           "stimuli_step": self.stimuli_step,
+                           "commodity": self.commodity}
         self.tracker = Tracker(btframe, tracker_configs)
         self.confirm_bts[1].config(command = self.tracker.spring_back)
         n = len(choices)
@@ -258,14 +256,19 @@ class ChoiceScreen(tk.Frame):
             p2 = int(float(stimuli.get("p2")) * 100)
             choice_range = range(0, p2 + self.stimuli_step, self.stimuli_step)
         else:
-            a1 = stimuli.get("c21")
-            a2 = stimuli.get("x22")
-            if a1.lower() == "na":
-                a1 = stimuli.get("y22")
+            a1 = stimuli.get("c21").lower()
+            a2 = stimuli.get("x22").lower()
+
+            if a1 != "na" and a2 != "na":
+                min_a = int(a1)
+                max_a = int(a1) + int(a2)
+            elif a1.lower() == "na":
+                a1 = stimuli.get("y22").lower()
                 if a1.lower() == "na":
                     a1 = 0
-
-            if a1 > a2:
+                min_a = min(int(a1), int(a2))
+                max_a = max(int(a1), int(a2))
+            elif a1 > a2:
                 min_a = int(a1)
                 max_a = int(a1) + int(a2)
             else:
@@ -329,9 +332,10 @@ class ChoiceScreen(tk.Frame):
             confirmed_choices = dict([(amt, b.get("var").get())
                                       for amt, b in self.current_bts.items()])
             #[self.current_choices[a].append(c)
-             #for a, c in confirmed_choices.items()]
+            #for a, c in confirmed_choices.items()]
         except AttributeError as e:
-            print e
+            ## This most likely means it did not find current_bts, which is 
+            ## created after that first question
             pass
         [bt.pack_forget() for bt in self.confirm_bts]
         try:
@@ -345,8 +349,12 @@ class ChoiceScreen(tk.Frame):
         'end_experiment' is either defined by end_experiment_default, or in
             the initiation of the Choicescreen
         """
-        self.write_data()
+        if self.mode == "practice":
+            pass
+        else:
+            self.write_data()
         self.remove_functionality()
+        self.pack_forget()
         self.end_experiment()
         return None
 
@@ -488,124 +496,49 @@ class ChoiceScreen(tk.Frame):
         self.bt_frame.pack_forget()
         return None
 
+    def avoid_overwrite(self, base_name, data_file):
+        if os.path.exists(data_file) == True:
+            fnames = [f for f in os.listdir(data_path) if f[0:10] == base_name]
+            fidx = len(fnames)
+            new_base = base_name + "_{}".format(fidx)
+            filename = new_base + ".csv".format(**self.idvars)
+            data_file = os.path.join(data_path, filename)
+        return None
+
     def write_data(self):
         """Unpack data dictionary and write to csv file
+
+        --File name should be "time_enum_vid_wzb.hh.id.csv" 
         """
-        #base = '/Users/aserwaahWZB/Projects/GUI Code/time/Current version'
-        base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        data_path = os.path.join(base, "data")
 
-        if os.path.exists(data_path) == False:
-            os.makedirs(data_path)
-
-        base_name = "time_{}_{}".format(*self.idvars)
-        base_name = base_name.translate(string.maketrans("",""),
-                                        string.punctuation).replace(" ", "_")
+        data_path = self.main.data_path
+        filename_vars = ("vid", "enum_id", "wzb.hh.id")
+        self.idvars["wzbhhid"] = self.idvars["wzb.hh.id"]
+        base_name = 'time_{vid}_{enum_id}_{wzbhhid}'.format(**self.idvars)
         filename = base_name + ".csv"
         data_file = os.path.join(data_path, filename)
 
-        # if os.path.exists(data_file) == True:
-        #     fnames = [f for f in os.listdir(data_path) if f[0:10] == base_name]
-        #     fidx = len(fnames)
-        #     new_base = base_name + "_{}".format(fidx)
-        #     filename = new_base + ".csv".format(*self.idvars)
-        #     data_file = os.path.join(data_path, filename)
-
-        data_list = [[dic.get(l) for l in self.data_labels]
+        id_vars = ("wzb.hh.id", "wzb.ind.id", "vid", "tid", "enumerator")
+        write_labels = id_vars + self.data_labels
+        data_list = [[dic.get(l) for l in write_labels]
                      for dic in self.choice_data.values()]
+
         with open(data_file, "a") as csvfile:
             data = csv.writer(csvfile)
-            data.writerow(self.data_labels)
+            if self.order == 0:
+                data.writerow(write_labels)
             [data.writerow(row) for row in data_list]
         print "Data written to  " + data_file
         return None
 
     def end_experiment_default(self):
-        tkMessageBox.showinfo("", ("Thank you for completing the experiment. "
-                                   "Please wait for the experimenter to proceed "
-                                   " to the payment stage"))
-        self.pack_forget()
         self.begin_payment()
         return None
 
     def begin_payment(self):
+        tkMessageBox.showinfo("", ("Payment."))
+        self.pack_forget()
         self.main.pay_screen = Payment(self.main)
-
-    def begin_paymentOLD(self, event):
-        pf = self.payment_frame
-        pf.pack(side = "top")
-        pf.config(bg = "DarkOliveGreen3")
-        qvar = tk.IntVar(pf)
-        amtvar = tk.StringVar(pf)
-        qentry = tk.OptionMenu(pf, qvar, *range(1, self.nquestions + 1))
-        qamt_entry =  tk.OptionMenu(pf, amtvar, "")
-        qlab = tk.Label(pf, text = "1. Please draw a question")
-        qamt = tk.Label(pf, text = "2. Please draw a subquestion: --")
-
-        def show_question_i():
-            qidx = qvar.get()
-            self.show_payment(qidx)
-            return None
-
-        def populate_amounts(name, index, mode):
-            self.pay_qidx = qidx = qvar.get()
-            stimuli = self.stimuli_dic.get(qidx)[1]
-            choice_range = self.get_choice_range(stimuli)
-
-            self.pay_stimuli = stimuli
-            a1 = stimuli.get("x22")
-            a2 = stimuli.get("y22")
-            if a2.lower() == "na":
-                a2 = 0
-            min_a = min(int(a1), int(a2))
-            max_a = max(int(a1), int(a2))
-
-            choices = ["{}: {}".format(i, x)
-                       for i, x in enumerate(choice_range, 1)]
-            qamt_entry["menu"].delete("0", "end")
-            [qamt_entry["menu"].add_command(label = choice,
-                                            command = tk._setit(amtvar, choice))
-             for choice in choices]
-            t = "2. Please draw a subquestion: 1-{}".format(len(choices))
-            qamt.config(text = t)
-            show_question_i()
-            return None
-
-        def show_choice(event, choice):
-            self.pie.selected.set(choice)
-            self.translate_choice_to_payment(choice, self.pay_stimuli)
-            return None
-
-        def update_choice(name, index, mode):
-            self.update_idletasks()
-            qdata = self.choice_data.get(self.pay_qidx)
-            vstring = amtvar.get()
-            val = int(vstring.split(":")[1].strip())
-            self.pay_val = val
-            min_0 = qdata.get("min_choice_0")
-            self.last_choice = min_0
-            choice = val < min_0
-            self.c0.set(val)
-            self.pie.elicit = qdata.get("elicit")
-            self.update_choice()
-            #self.pie.selected.set(choice)
-            self.pie.__class__.class_selected.set(choice)
-
-            qamt_entry.bind("<Leave>",
-                            lambda e = "", c = choice: show_choice(e, c))
-            self.pay_choice = choice
-            return None
-
-        pay_vars = (qvar, amtvar)
-        pay_funcs = (populate_amounts, update_choice)
-        pay_labs = enumerate((qlab, qamt))
-        pay_entries = enumerate((qentry, qamt_entry))
-
-        [v.trace("w", f) for v, f in zip(pay_vars, pay_funcs)]
-        [w.grid(row = i, column = 0, sticky = "w", padx = 5)
-         for i, w in pay_labs]
-        [w.grid(row = i, column = 1, sticky = "w", padx = 5)
-         for i, w in pay_entries]
         return None
 
     def translate_choice_to_payment(self, stimuli, choice):
@@ -616,53 +549,57 @@ class ChoiceScreen(tk.Frame):
         balls_0 = None
         balls_1 = None
         amt_0 = None
-        amt_1 = 0
+        amt_1 = None
         amt_c21 = None
         amt_double = False
-        # Took a shortcut with the times. Will not work for generalisations!
+        win_1 = None
+        win_2 = None
+
+        ## Took a shortcut with the times. Will not work for generalisations!
         t1 = int(stimuli.get("t12"))
         t2 = int(stimuli.get("t22"))
-
         dates = [(datetime.date.today() +\
                   datetime.timedelta(t * 365 / 12 + 1)).strftime("%d-%b-%Y")
                  for t in (t1, t2)]
+        #self.pie.elicit = stimuli.get("elicit")
+        paydate_1 = None
+        paydate_2 = None
 
-        self.pie.elicit = stimuli.get("elicit")
-        print "working fine here"
-        #lottery = False
-        print self.pie.elicit, "elicit"
+        name = self.idvars.get("name")
+        if name == "":
+            name = "The player "
 
         if self.pie.elicit == "amt":
-            print "here"
             if block == "risk":
-                print "a"
                 if choice == False:
                     lottery = False
                     amt = self.pay_val
                     date = dates[0]
+                    win_1 = amt
                 else:
-                    print "b"
                     lottery = True
                     prob = 50
                     amt_0 = stimuli.get("x22")
                     amt_1 = stimuli.get("y22")
                     date = dates[1]
             elif block == "time":
-                print "c"
                 lottery = False
                 date = dates[0]
                 if choice == False:
                     amt = self.pay_val
+                    win_1 = amt
                 else:
-                    print "d"
                     amt = stimuli.get("x22")
                     amt_c21 = stimuli.get("c21")
+                    win_1 = amt
                     if amt_c21 != "na":
                         amt_double = True
                         lottery = "amt_double"
                         date = "{} and {}".format(*dates)
+                        win_1 = amt_c21
+                        win_2 = amt
+                
         elif self.pie.elicit == "prob":
-            print "these are here"
             if choice == False:
                 lottery = True
                 prob = self.pay_val
@@ -672,9 +609,12 @@ class ChoiceScreen(tk.Frame):
                 lottery = False
                 amt = stimuli.get("x22")
                 date = dates[1]
+                win_1 = amt
 
         if amt_double == False:
             direct_winnings = amt
+            dates[1] = None
+            paydate_1 = date
         else:
             direct_winnings = "{}g and {}".format(amt_c21, amt)
 
@@ -682,11 +622,6 @@ class ChoiceScreen(tk.Frame):
             balls_0 = (int(prob) * 20 )/ 100
             balls_1 = 20 - balls_0
 
-        name = self.idvars.get("name")
-        if name == "":
-            name = "The player "
-
-        print lottery, "lottery"
         lottery_name_dic = {True: "a LOTTERY",
                             False: "a DIRECT PAYMENT",
                             "amt_double": "two DIRECT PAYMENTS"}
@@ -720,15 +655,19 @@ class ChoiceScreen(tk.Frame):
                        "amt": amt,
                        "amts": (amt_0, amt_1),
                        "times": (t1, t2),
+                       "paydate_1": paydate_1,
+                       "paydate_2": dates[1],
                        "name": name,
                        "balls": (balls_0, balls_1),
                        "t1": t1,
                        "t2": t2,
                        "winnings": direct_winnings,
+                       "win_1": win_1,
+                       "win_2": win_2,
                        "commodity": self.commodity,
                        "commodity_text":ctext_dic.get(self.commodity),
                        "date": date}
-
+        pay_configs.update(self.idvars)
         return output, pay_configs
 
     def show_payment(self, qidx):

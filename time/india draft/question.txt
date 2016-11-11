@@ -1,0 +1,8 @@
+classes = {"choice": Choice,
+           "entry": Entry,
+           "slider": Slider,
+           "check": Check,
+           "dropdown": Dropdown,
+           "text": TextBox,
+           "dynamic_text": DynamicText}
+

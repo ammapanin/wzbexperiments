@@ -76,7 +76,6 @@ class Startscreen(tk.Frame):
         idx_dic = self.dropdowns.save_data()
         tdic = self.transform_variables(idx_dic)
         #idx_dic.update({"enum_id": tdic.get("enumerator")})
-        print "idx dictionary", idx_dic
         self.pack_forget()
         self.show_experiment(idx_dic)
         return None

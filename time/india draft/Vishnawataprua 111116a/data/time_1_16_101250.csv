@@ -1,0 +1,6 @@
+wzb.hh.id,wzb.ind.id,vid,tid,enumerator,qorder,cl_idx,elicit,start_amt,min_choice_p0,max_choice_p1,min_choice_0,max_choice_1
+101250,101250x4,1,1,Madhu,1,2,amt,300,320,300,320,300
+101250,101250x4,1,1,Madhu,2,5,prob,15,30,25,30,25
+101250,101250x4,1,1,Madhu,1,6,prob,40,65,60,65,60
+101250,101250x4,1,1,Madhu,2,2,amt,1100,1500,1400,1500,1400
+101250,101250x4,1,1,Madhu,3,4,amt,1500,1800,1700,1800,1700

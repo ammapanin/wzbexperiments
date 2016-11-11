@@ -32,11 +32,6 @@ class SquarePie(tk.Canvas):
         prob_type = pie_configs.get("prob_type")
         self.draw_display(prob_type)
 
-#        self.tea = Tea(self)
-#        self.tea_ix = self.create_window(100, 20, 
-#                                         anchor = "nw",
-#                                         window = self.tea)
-
     def draw_display(self, prob_type):
         """Draws all aspects of a single prospect display
         Args: prob_type (string) -- probability either pie or circles
@@ -319,8 +314,8 @@ class SquarePie(tk.Canvas):
         circles = [self.create_oval(a, b, c, d, tag = "circle") 
                    for a, b, c, d in xy]
 
-        qcol = "dark gray"
-        pfont = tkFont.Font(size = 20)
+        qcol = "dark goldenrod"
+        pfont = tkFont.Font(size = 15)
         
         px = self.xmax + 70
         pcoords = ((px, 45), (px, 150))
@@ -329,7 +324,7 @@ class SquarePie(tk.Canvas):
                                       fill = self.pie_colour,
                                       font = pfont)
                       for x, y in pcoords]
-        self.itemconfig(prob_texts[1], fill = "dark gray")
+        self.itemconfig(prob_texts[1], fill = qcol)
 
         def update_probability_circles(p):
             p = int(p * 1)
@@ -344,7 +339,7 @@ class SquarePie(tk.Canvas):
             [self.itemconfig(i, fill = qcol) 
              for i in circles[p_fill:]]
 
-            [self.itemconfigure(i, text = "{} balls".format(p))
+            [self.itemconfigure(i, text = "{} tokens".format(p))
              for i, p in zip(prob_texts, probs)]
             self.resize("event")
             return None
@@ -414,11 +409,17 @@ class SquarePie(tk.Canvas):
     def format_amounts(self, amt):
         """To be used in places where the amount will be a string
         """
-        
-        if str(amt) == "1000":
-            amt = "1K"
-        if str(amt) == "2000":
-            amt = "2K"
+        try:
+            int_amt = int(amt)
+            if int_amt < 1000:
+                amt = amt
+            elif int_amt % 1000 == 0:
+                amt = "{}K".format(int_amt / 1000)
+            elif int_amt > 1000:
+                amt_dec = float(amt) / 1000
+                amt = "{}K".format(amt_dec)
+        except:
+            pass
         return amt
 
     def draw_amounts(self):
@@ -521,6 +522,7 @@ class PieScreen(tk.Canvas):
             p1, p2 = [p * 100 for p in (p1, p2)]
 
         except:
+            print "A problem with this stimuli"
             print stimulus
         [pie.prob.set(p) for pie, p in zip(self.pies, (p1, p2))]
 

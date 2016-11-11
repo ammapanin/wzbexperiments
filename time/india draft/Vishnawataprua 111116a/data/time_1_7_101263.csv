@@ -1,0 +1,6 @@
+wzb.hh.id,wzb.ind.id,vid,tid,enumerator,qorder,cl_idx,elicit,start_amt,min_choice_p0,max_choice_p1,min_choice_0,max_choice_1
+101263,101263x2,1,1,Ganagadhara,1,2,amt,1900,2000,1900,2000,1900
+101263,101263x2,1,1,Ganagadhara,2,6,prob,95,70,65,70,65
+101263,101263x2,1,1,Ganagadhara,3,4,amt,1100,1100,1000,1100,1000
+101263,101263x2,1,1,Ganagadhara,1,5,prob,15,15,10,15,10
+101263,101263x2,1,1,Ganagadhara,2,2,amt,240,240,220,240,220

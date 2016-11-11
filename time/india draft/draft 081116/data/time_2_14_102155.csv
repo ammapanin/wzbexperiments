@@ -1,0 +1,6 @@
+wzb.hh.id,wzb.ind.id,vid,tid,enumerator,qorder,cl_idx,elicit,start_amt,min_choice_p0,max_choice_p1,min_choice_0,max_choice_1
+102155,102155x2,2,1,Praveen,1,6,prob,5,35,30,35,30
+102155,102155x2,2,1,Praveen,2,2,amt,2600,2700,2600,2700,2600
+102155,102155x2,2,1,Praveen,3,4,amt,1600,1700,1600,1700,1600
+102155,102155x2,2,1,Praveen,1,2,amt,240,340,320,340,320
+102155,102155x2,2,1,Praveen,2,10,prob,100,85,80,85,80

@@ -1,11 +1,10 @@
 ### Determines the whole structure of the program
 ### Set the desks, import the stimuli etc.
 
-### Last updated: 4.11.16
+### Last updated: 11.11.16
 ## TODO:
-## - Work on the switch between tea and money, make it prettier
-## - Have a log-in screen for Akurru
-## - Start thinking about the general log-in screen
+## - Verify double dates
+## - Get program go-ahead from Nando
 
 import Tkinter as tk
 import tkFont
@@ -13,18 +12,25 @@ import tkMessageBox
 import os
 import csv
 import random
-
 from program_files.Choicescreen import ChoiceScreen
 from program_files.training import Training
 from program_files.startscreen.startscreen import Startscreen
 from program_files.startscreen.definitions import *
+from program_files.questionnaire.questionnaire import Questionnaire
 
 class TimeExperiment(tk.Frame):
-    def __init__(self, master, stimuli_path, debug, prob_type, commodities):
+    def __init__(self,
+                 master,
+                 program_path,
+                 stim_path_str,
+                 debug,
+                 prob_type,
+                 commodities,
+                 survey_dic):
+
         tk.Frame.__init__(self, master)
         self.pack(side = "top", fill = "both", expand = True)
         self.root  = master
-        self.stimuli_path = stimuli_path
 
         if debug == True:
             self.debug_segue = False
@@ -34,12 +40,41 @@ class TimeExperiment(tk.Frame):
                                   prob_type = prob_type,
                                   commodity = "tea")
         else:
-            self.deskvar = tk.IntVar()
-            self.deskvar.set("")
+            self.survey_dic = survey_dic
+            self.setup_paths(program_path, stim_path_str)
             self.start_screen()
             self.debug_segue = self.segue_experiment
             self.prob_type = prob_type
             self.commodities = commodities
+
+
+    def setup_paths(self, base_folder, stim_path_str):
+        """Create stimuli, data, payment paths as attributes of TimeExperiment
+        """
+        def make_if_not(path):
+            if os.path.exists(path) == False:
+                os.makedirs(path)
+                print "Created path:  {}".format(path)
+            return None
+
+        self.stimuli_path = os.path.join(base_folder,
+                                         "program_files",
+                                         stim_path_str,
+                                         "stimuli")
+
+        self.payment_path = os.path.join(base_folder,
+                                         "payment")
+
+        self.data_path = os.path.join(base_folder,
+                                      "data")
+
+        survey_path = os.path.join(base_folder,
+                                   "survey data")
+        self.survey_dic["data_path"] = survey_path
+
+        data_paths =  (self.payment_path, self.data_path, survey_path)
+        [make_if_not(p) for p in data_paths]
+        return None
 
     def start_screen(self):
          login = tk.Frame(self)
@@ -47,49 +82,6 @@ class TimeExperiment(tk.Frame):
          Startscreen(login, self.show_instructions, definitions, False)
          self.login = login
          return None
-    #     self.idvars = (tk.StringVar(self), tk.StringVar(self))
-    #     enum_var, ind_var = self.idvars
-
-    #     titlefont = tkFont.Font(size = 20, weight = "bold")
-    #     title = tk.Label(self,
-    #                      text = ("Welcome to the experiment."),
-    #                      justify = "left", font = titlefont)
-
-    #     with open(os.path.join(base_folder,
-    #                            "program_files",
-    #                            "enumerators.csv")) as enums_file:
-    #             enums = csv.reader(enums_file)
-    #             enum_names = tuple([enum[0] for enum in enums])
-
-    #     with open(os.path.join(base_folder,
-    #                            "program_files",
-    #                            "akkuru_names.csv")) as akkuru_file:
-    #             akkuru = csv.reader(akkuru_file)
-    #             akkuru_names = tuple([person[0] for person in akkuru])
-
-    #     enumerators = enum_names
-    #     enums = apply(tk.OptionMenu,
-    #                   (login, enum_var) + tuple(enum_names))
-    #     ind = apply(tk.OptionMenu,
-    #                 (login, ind_var) + tuple(akkuru_names))
-    #     labs = [tk.Label(login, text = txt)
-    #             for txt in ("Enumerator", "Individual")]
-    #     ok = tk.Button(login, text = "OK")
-
-    #     big_widgets =  enumerate((enums, ind, ok))
-    #     [w.grid(row = i, column = 0, sticky = "w") for i, w in enumerate(labs)]
-    #     [w.grid(row = i, column = 1, sticky = "w") for i, w in big_widgets]
-
-    #     [w.pack(side = "top", anchor = "w", padx = 10, pady = 10)
-    #      for w in (title, login)]
-
-    #     def next_step():
-    #         title.destroy()
-    #         login.destroy()
-    #         self.show_instructions()
-    #         return None
-    #     ok.config(command = next_step)
-    #     #entry_box.bind("<Return>", next_step)
 
     def show_instructions(self, idx_dic):
         self.login.destroy()
@@ -119,10 +111,10 @@ class TimeExperiment(tk.Frame):
         def next_step():
             iframe.destroy()
             self.training = Training(self)
-            self.training.next_function = lambda: self.start_experiment("practice",
-                                                                   self.debug_segue,
-                                                                   self.prob_type,
-                                                                   "tea")
+            self.training.next_function = lambda: self.start_practice("practice",
+                                                                      self.debug_segue,
+                                                                      self.prob_type,
+                                                                      "tea")
             return None
 
         ok_bt = tk.Button(iframe,
@@ -132,6 +124,19 @@ class TimeExperiment(tk.Frame):
 
         ok_bt.config(command = next_step)
         ok_bt.pack(side = "top", anchor = "w", padx = 20)
+
+    def start_practice(self, mode, end_func, prob_type, commodity):
+        self.training.destroy()
+        stimuli = self.get_stimuli(mode, commodity)
+        self.practice = ChoiceScreen(self,
+                                stimuli,
+                                mode,
+                                end_func,
+                                self.idvars,
+                                prob_type,
+                                commodity)
+        self.practice.start()
+        return None
 
     def setup_full_experiments(self, mode, prob_type):
         stimuli = [self.get_stimuli(mode, commodity)
@@ -151,75 +156,33 @@ class TimeExperiment(tk.Frame):
         self.start = random.choice([0, 1])
         self.other = abs(1 - self.start)
 
-        self.choices[self.start].end_experiment = self.show_other
-        #self.choices[self.other].end_experiment = self.end_experiment
-        self.choices[self.start].start()
-        return self.choices
-
-    def show_other(self):
-        start = self.choices[self.start]
-        #start.write_data()
-        start.pack_forget()
-        other = self.choices[self.other]
-        other.pack(expand = True, fill = "both")
-        other.start()
-        return None
-
-    def end_experiment(self):
-        [p.pack_forget() for p in self.choices]
-        frame = tk.Frame(self)
-        frame.pack(fill = "both", expand = True)
-
-        pay_var = tk.IntVar(self)
-        commodityfont = tkFont.Font(size = 25, weight = "bold")
-        choices = [tk.Radiobutton(frame,
-                                  value = i,
-                                  text = screen.commodity,
-                                  variable = pay_var,
-                                  font = commodityfont) for
-                   i, screen in enumerate(self.choices)]
-        [bt.pack(side = "left") for bt in choices]
-
-        def trigger_payment():
-            idx = pay_var.get()
-            frame.pack_forget()
-            self.choices[idx].pack(fill = "both", expand = True)
-            self.choices[idx].begin_payment("event")
+        def begin():
+            s = self.choices[self.other]
+            self.show_choices(s)
             return None
 
-        ok = tk.Button(frame,
-                       text = "OK, begin payment",
-                       command = trigger_payment)
+        self.choices[self.start].end_experiment = begin
+        self.choices[self.other].end_experiment = self.show_survey
+        #self.choices[self.other].end_experiment = self.end_experiment
+        self.choices[self.start].start()
+        self.choices[self.start].order = 0
+        self.choices[self.other].order = 1
+        return self.choices
 
-        ok.pack(side = "left")
-
-    def start_experiment(self, mode, end_func, prob_type, commodity):
-        self.training.destroy()
-        stimuli = self.get_stimuli(mode, commodity)
-        print self.idvars
-        #idvars = tuple(self.idvars.values())#tuple([v.get() for v in self.idvars])
-        self.choices = ChoiceScreen(self,
-                                    stimuli,
-                                    mode,
-                                    end_func,
-                                    self.idvars,
-                                    prob_type,
-                                    commodity)
-        self.choices.start()
+    def show_choices(self, screen):
+        [c.pack_forget() for c in self.choices]
+        screen.start()
         return None
 
     def segue_experiment(self):
-        tkMessageBox.showinfo("", ("You will now begin the real experiment. "
-                                   "Please ask your experimenter if anything "
-                                   "remains unclear."))
-
-        self.choices.pack_forget()
+        tkMessageBox.showinfo("", ("Begin the real experiment."))
+        self.practice.pack_forget()
         self.setup_full_experiments("full", self.prob_type)
-        # self.start_experiment("full",
-        #                       end_func = False,
-        #                       prob_type = self.prob_type,
-        #                       commodity = self.commodity)
         return None
+
+    def show_survey(self):
+        self.survey_dic["next_function"] = self.choices[-1].begin_payment
+        self.survey =  Questionnaire(self, **self.survey_dic)
 
     def get_stimuli(self, mode, commodity):
         """Transforms the csv file into a form ready for the program
@@ -255,24 +218,44 @@ class TimeExperiment(tk.Frame):
             lines = enumerate(stimuli, 1)
         return lines, len(stimuli)
 
-def run_experiment(stimuli_path, debug, prob_type, commodities):
+
+def run_experiment(base_path,
+                   stim_str,
+                   debug,
+                   prob_type,
+                   commodities,
+                   survey_dic):
     root = tk.Tk()
     root.attributes("-fullscreen", True)
     root.title("Risk and time experiment")
-    x = TimeExperiment(root, stimuli_path, debug, prob_type, commodities)
+    x = TimeExperiment(root, base_path, stim_str,
+                       debug, prob_type, commodities, survey_dic)
     root.mainloop()
     return x
 
+
+
+
+
+# "/Users/aserwaahWZB/Projects/GUI Code/india other data/Old versions/120915/pkg/lcf survey/details/definitions"
+
 #base_folder = "/Users/aserwaahWZB/Projects/GUI Code/time/india draft/draft 271016/"
 base_folder = os.path.dirname(os.path.realpath(__file__))
-stimuli_path = csvpath = os.path.join(base_folder,
-                                      "program_files",
-                                      "full",
-                                      "stimuli")
-x = run_experiment(stimuli_path,
+csv_path = os.path.join(base_folder, "program_files/definitions")
+
+title = "Time preferences survey"
+survey_dic = {"csv_path": csv_path,
+         "data_path": "",
+         "title": title,
+         "next_function": ""}
+
+x = run_experiment(base_folder,
+                   "full",
                    debug = False,
                    prob_type = "circles",
-                   commodities = ("tea", "money"))
+                   commodities = ("tea", "money"),
+                   survey_dic = survey_dic)
+
 
 
 

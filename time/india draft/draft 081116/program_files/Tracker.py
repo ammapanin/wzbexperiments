@@ -23,7 +23,7 @@ class GradualTracker(tk.Canvas):
         self.stimuli_step = tracker_configs.get("stimuli_step")
         self.create_tracker(tracker_configs)
         self.pack(side = "left", fill = "y", expand = True)
-
+        self.commodity = tracker_configs.get("commodity")
 
     def update_choice(self, choice, current):
         """Changes the position of one tracker rectangle, and slider
@@ -110,7 +110,6 @@ class GradualTracker(tk.Canvas):
 
     def confirmation_fill(self, last_choice):
         """Setup the tracker for the confirmations.
-
         """
         self.xval = self.tvar.get()
         val = self.tmin + (self.tmax - self.xval)
@@ -246,13 +245,22 @@ class GradualTracker(tk.Canvas):
         return fill_func
 
     def update_amount(self, amt_id):
+        """Configure the tracker text according to the unit
+        """
+        amt_dic = {"euro": "\xe2\x82\xac",
+                   "money": "Rs",
+                   "tea": "g TEA"}
+        amt = amt_dic.get(self.commodity)
+        
         symbol_dic = {"prob": "%",
-                      "amt": "\xe2\x82\xac"}
+                      "amt": amt}
+
         value = '{}' + symbol_dic.get(self.elicit)
         current = float(self.tvar.get())
-
         slider_amt = int(self.tmin + (self.tmax - current))
-        self.itemconfig(amt_id, text = value.format(slider_amt), state = "normal")
+        self.itemconfig(amt_id, 
+                        text = value.format(slider_amt), 
+                        state = "normal")
         return None
 
     def draw_amount(self, x, y, anchorxy, minmax):

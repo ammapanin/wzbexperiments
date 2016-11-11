@@ -1,0 +1,18 @@
+qlabel,tab,
+time,,
+tea_stock,time,
+tea_monthly,time,
+tea_frequency,time,
+food_manage,time,
+tea_owe,time,
+tea_owed,time,
+money_owe,time,
+money_owed,time,
+money_save,time,
+household_size,time,
+income_regular,time,
+table_income,time, Please fill in for all.
+medical_emergency,time,
+ceremonial_emergency,time,
+contributions,time,
+table_plots,time, Please fill in for all.
